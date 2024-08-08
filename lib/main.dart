@@ -7,15 +7,18 @@ import 'package:car_booking_customer/Res/Services/appconfig.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
+import 'package:car_booking_customer/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 late ConstantSheet styleSheet;
 SharedPrefs prefs = SharedPrefs.instance;
-Future<void> main() async{
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-await  prefs.getpref();
+  await prefs.getpref();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
