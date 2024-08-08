@@ -18,10 +18,7 @@ SharedPrefs prefs = SharedPrefs.instance;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await prefs.getpref();
-
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
