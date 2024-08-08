@@ -1,4 +1,4 @@
-package com.example.car_booking_customer
+package com.carbooking.customer
 
 import io.flutter.embedding.android.FlutterActivity
 
