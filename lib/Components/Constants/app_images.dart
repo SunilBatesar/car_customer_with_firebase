@@ -1,0 +1,100 @@
+// ignore_for_file: non_constant_identifier_names
+
+class AppImage {
+  AppImage();
+  String Applogo = "assets/image/Applogo.svg";
+  String Bg_img = "assets/image/bg_img.png";
+  String white_mercedes = "assets/image/white_mercedes.png";
+  String white_sports_car = "assets/image/white_sports_car.png";
+  String blue_sports_car = "assets/image/blue_sports_car.png";
+  String blue_lambo = "assets/image/blue_lembo.png";
+  String orange_sports_car = "assets/image/orange_sports_car.png";
+  String multiple_cars = "assets/image/multiple_cars.png";
+  String kycimage = "assets/image/kyc_img.png";
+  String weddingBoyGirl = "assets/image/wedding_boy_girl.png";
+  String girlprofile = "assets/image/girl_profile.png";
+  String mapImage = "assets/image/map_image.png";
+  String toyotacar = "assets/image/toyotacar.png";
+  String swift = "assets/image/swift.png";
+  String payment = "assets/image/payment.svg";
+  String accountCar = "assets/image/accountcar.png";
+  String logout = "assets/image/logout.png";
+  String deleteprofile = "assets/image/deleteprofile.svg";
+  String bankCardAddedSuccessfully =
+      "assets/image/BankCardAddedSuccessfully.svg";
+  String passwordSuccessfully = "assets/image/password_successfully.svg";
+  String camera = "assets/image/camera.svg";
+  String gallery = "assets/image/gallery.svg";
+  String sadCar = "assets/image/sad_car.svg";
+}
+
+// SVG Images
+class AppIcons {
+  AppIcons();
+  String fb = "assets/icon/fb.svg";
+  String google = "assets/icon/google.svg";
+  String indianFlag = "assets/icon/Indian_flag.svg";
+  String petrol = "assets/icon/petrol.svg";
+  String km = "assets/icon/km.svg";
+  String seat = "assets/icon/seat.svg";
+  String person = "assets/icon/person.svg";
+  String mail = "assets/icon/mail.svg";
+  String location = "assets/icon/location.svg";
+  String location2 = "assets/icon/location2.svg";
+  String refresh = "assets/icon/refresh.svg";
+  String calender = "assets/icon/calender.svg";
+  String four_box = "assets/icon/four_box.svg";
+  String click = "assets/icon/click.svg";
+  String paymentSuccessfull = "assets/icon/paymentsuccessfull.svg";
+  String phone = "assets/icon/phone.svg";
+  String vigible = "assets/icon/vigible.svg";
+  String noVigible = "assets/icon/no_vigible.svg";
+  String booking = "assets/icon/booking.svg";
+  String gear = "assets/icon/gear.svg";
+  String download = "assets/icon/download.svg";
+  String search = "assets/icon/search.svg";
+  String notification = "assets/icon/notification.svg";
+  String vector = "assets/icon/vector.svg";
+  String black_heart = "assets/icon/black_heart.svg";
+  String wallet = "assets/icon/wallet.svg";
+  String card = "assets/icon/card.svg";
+  String Redeem_Coupon = "assets/icon/Redeem_Coupon.svg";
+  String add = "assets/icon/add.svg";
+  String privacy = "assets/icon/privacy.svg";
+  String terms = "assets/icon/terms.svg";
+  String logout = "assets/icon/logout.svg";
+  String paymentsuccess = "assets/icon/payment_success.svg";
+  String rightArrow = "assets/icon/right_arrow.svg";
+  String leftArrow = "assets/icon/leftArrow.svg";
+  String rightArrow2 = "assets/icon/right_arrow2.svg";
+  String upDownArrow = "assets/icon/updown_arrow.svg";
+  String filter = "assets/icon/filter.svg";
+  String addIcon = "assets/icon/add.svg";
+  String couponsIcon = "assets/icon/coupons.svg";
+  String logoutIcon = "assets/icon/logout.svg";
+  String notificationIcon = "assets/icon/notification.svg";
+  String privacyIcon = "assets/icon/privacy.svg";
+  String profileIcon = "assets/icon/profile.svg";
+  String termsIcon = "assets/icon/terms.svg";
+  String transactionIcon = "assets/icon/transaction.svg";
+  String bookingIcon = "assets/icon/bookingicon_black.svg";
+  String editIcon = "assets/icon/edit.svg";
+  String playbtn = "assets/icon/playbtn.svg";
+  String cash = "assets/icon/cash.svg";
+  String visa = "assets/icon/visa.svg";
+  String upi = "assets/icon/upi.svg";
+  String paytm = "assets/icon/paytm.svg";
+  String expire = "assets/icon/expire.svg";
+  String language = "assets/icon/language.svg";
+  String rateUs = "assets/icon/rateUs.svg";
+  String helpandSupport = "assets/icon/HelpandSupport.svg";
+  String fAQ = "assets/icon/FAQ.svg";
+  String headphone = "assets/icon/headphones.svg";
+  String Whatsapp = "assets/icon/whatsapp.svg";
+  String delete = "assets/icon/delete.svg";
+  String tollfree = "assets/icon/tollfree.svg";
+  String mic = "assets/icon/mic.svg";
+  String share = "assets/icon/share.svg";
+  String send = "assets/icon/send.svg";
+  String arrowUp = "assets/icon/arrow_up.svg";
+}
