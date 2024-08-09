@@ -1,5 +1,6 @@
 import 'package:car_booking_customer/Components/Constants/app_images.dart';
 import 'package:car_booking_customer/Components/Constants/style_sheet.dart';
+import 'package:car_booking_customer/Res/Apis/apis.dart';
 import 'package:car_booking_customer/Res/Services/app_services.dart';
 
 class ConstantSheet {
@@ -29,4 +30,8 @@ class ConstantSheet {
   //  APP Images GET
   final _appIcons = AppIcons();
   AppIcons get icons => _appIcons;
+
+  // API GET
+  final _apis = Apis();
+  Apis get apis => _apis;
 }
