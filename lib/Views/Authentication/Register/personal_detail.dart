@@ -14,7 +14,6 @@ import 'package:get/get.dart';
 
 class PersonalDetailScreen extends StatelessWidget {
   PersonalDetailScreen({super.key});
-  final usercontroller = Get.find<UserController>();
 
   final _key = GlobalKey<FormState>();
   final userController = Get.find<UserController>();
@@ -89,7 +88,10 @@ class PersonalDetailScreen extends StatelessWidget {
 
   _getValideTextField() {
     if (_key.currentState!.validate()) {
-      Get.toNamed(RoutesName.addressDetailScreen);
+      // Get.toNamed(RoutesName.addressDetailScreen);
+      userController.signup({
+   
+      });
     }
   }
 }

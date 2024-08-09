@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:767938749957:android:86151c428c68122ad45e6c",
+        "mobilesdk_app_id": "1:767938749957:android:1251016f52dafdffd45e6c",
         "android_client_info": {
-          "package_name": "com.carb"
+          "package_name": "com.carbooking.customer"
         }
       },
       "oauth_client": [],

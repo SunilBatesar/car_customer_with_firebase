@@ -28,9 +28,13 @@ class UserController extends GetxController {
       if (id.isNotEmpty) {
         UserModel data = uData.copyWith(id: id, owner: false, customer: true);
         await _service.post(styleSheet.apis.userDocument(id), data.tomap());
+        await prefs.setUserPrefe(model: data);
         _userdata = DataResponse.complete(data);
       }
     } catch (e) {
+      print("-------------");
+      print(e.toString());
+      print("-------------");
       _userdata = DataResponse.error(e.toString());
     } finally {
       update();
