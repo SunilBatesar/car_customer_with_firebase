@@ -1,5 +1,6 @@
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
+import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
@@ -65,9 +66,13 @@ class ExitDialog extends StatelessWidget {
                         backGroundTransparent: true,
                         onPressed: () {})),
                 styleSheet.services.addwidth(15.w),
-                Expanded(
-                    child: PrimaryButton(
-                        title: LanguageConst.no.tr, onPressed: () {})),
+                GetBuilder<UserController>(
+                    builder: (controller) => Expanded(
+                        child: PrimaryButton(
+                            title: LanguageConst.no.tr,
+                            onPressed: () async {
+                              await controller.logout();
+                            }))),
               ],
             )
           ],

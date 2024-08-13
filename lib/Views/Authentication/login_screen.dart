@@ -2,6 +2,7 @@ import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/TextFields/primary_text_form_field.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
+import 'package:car_booking_customer/Utils/Enums/enums.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Utils/app_validators.dart';
 import 'package:car_booking_customer/Views/Authentication/Widgets/auth_common_widget.dart';
@@ -26,9 +27,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final userController = Get.find<UserController>();
 
   // LOGIN SCREEN TEXT EDITING  CONTROLLERS
-  final loginUserEmailController = TextEditingController();
+  final emailController = TextEditingController();
 
-  final loginPasswordController = TextEditingController();
+  final passwordController = TextEditingController();
 
   var arg = Get.arguments;
 
@@ -59,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _key,
               child: Column(children: [
                 PrimaryTextFormField(
-                  controller: loginUserEmailController,
+                  controller: emailController,
                   keyboardtype: TextInputType.emailAddress,
                   validator: EmailValidator(),
                   title: LanguageConst.userE.tr,
@@ -68,7 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 styleSheet.services.addheight(15.h),
                 PrimaryTextFormField(
-                  controller: loginPasswordController,
+                  controller: passwordController,
                   validator: PasswordValidator(),
                   title: LanguageConst.password.tr,
                   hinttext: LanguageConst.enterP.tr,
@@ -84,13 +85,17 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ])),
           styleSheet.services.addheight(30.h),
-          PrimaryButton(
-            title: LanguageConst.login.tr,
-            onPressed: () {
-              _getValideTextField();
-            },
-            isExpanded: true,
-          ),
+          GetBuilder<UserController>(
+              builder: (controller) => PrimaryButton(
+                    title: LanguageConst.login.tr,
+                    onPressed: () {
+                      _getValideTextField();
+                    },
+                    isExpanded: true,
+                    isloading: controller.userdata.state == DataState.ISLOADING
+                        ? true
+                        : false,
+                  )),
           styleSheet.services.addheight(30.h),
           Align(
             alignment: Alignment.centerRight,
@@ -172,8 +177,12 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  _getValideTextField() {
+  _getValideTextField() async {
     if (_key.currentState!.validate()) {
+      await userController.login({
+        "email": emailController.text,
+        "password": passwordController.text,
+      });
       Get.offNamed(RoutesName.bottombarScreen);
     }
   }

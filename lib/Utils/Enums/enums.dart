@@ -7,4 +7,4 @@ enum AuthState { LOGIN, SIGNUP, LOGOUT }
 enum PaymentState { CAR, ADDRESS, PAYMENT }
 
 // DATA STATE
-enum DataState { PENDING, COMPLETE, ERROR }
+enum DataState { PENDING, COMPLETE, ERROR ,ISLOADING}

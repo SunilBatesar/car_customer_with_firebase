@@ -15,7 +15,7 @@ class SharedPrefs {
 
   //  ALL KEYS
   static get _languageKey => "languageKey";
-  static get _userKey => "userKey";
+   get userKey => "userKey";
 
   Future<dynamic> setSharedPrefs(String key, String value) async {
     return await _preferences.setString(key, value);
@@ -25,7 +25,7 @@ class SharedPrefs {
     return _preferences.getString(key) ?? "";
   }
 
-  Future<dynamic> removSharedPrefs(String key) async {
+  Future<bool> removSharedPrefs(String key) async {
     return await _preferences.remove(key);
   }
 
@@ -42,11 +42,12 @@ class SharedPrefs {
 
   // USER PREFE
   Future setUserPrefe({required UserModel model}) async{
-  await  _preferences.setString(_userKey, jsonEncode(model.tomap()));
+  await  _preferences.setString(userKey, jsonEncode(model.tomap()));
   }
 
   UserModel getUserPrefe() {
     return UserModel.fromjson(
-        jsonDecode(_preferences.getString(_userKey).toString()));
+        jsonDecode(_preferences.getString(userKey).toString()));
   }
+
 }

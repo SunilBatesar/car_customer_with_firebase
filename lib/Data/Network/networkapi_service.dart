@@ -10,9 +10,10 @@ import 'package:http/http.dart' as http;
 class NetworkapiService extends BaseapiService {
   final _auth = FirebaseAuth.instance;
   @override
-  Future authenticate(AuthState state, {Map<String, dynamic>? json}) async {
-    String email = json!["email"];
-    String password = json["password"];
+  Future authenticate(
+      {required AuthState state, Map<String, dynamic>? json}) async {
+    String email = json!["email"] ?? "";
+    String password = json["password"] ?? "";
     try {
       if (state == AuthState.SIGNUP) {
         UserCredential usercredential = await _auth
@@ -44,6 +45,24 @@ class NetworkapiService extends BaseapiService {
       rethrow;
     }
     return response;
+  }
+
+  //  GET DATA
+  @override
+  Future get(path) async {
+    Future<Object> response;
+    try {
+      if (path is CollectionReference) {
+        response = path.get();
+      } else if (path is Query<Map<String, dynamic>>) {
+        response = path.get();
+      } else {
+        response = (path as DocumentReference).get();
+      }
+      return response;
+    } catch (e) {
+      rethrow;
+    }
   }
 }
 

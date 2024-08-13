@@ -6,6 +6,7 @@ class DataResponse<T> {
   String? message;
   DataResponse({this.state, this.data, this.message});
   DataResponse.pending() : state = DataState.PENDING;
+  DataResponse.isloading() : state = DataState.ISLOADING;
   DataResponse.complete(this.data) : state = DataState.COMPLETE;
   DataResponse.error(this.message) : state = DataState.ERROR;
   @override
