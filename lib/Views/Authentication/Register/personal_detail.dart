@@ -3,8 +3,8 @@
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/TextFields/primary_text_form_field.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
-import 'package:car_booking_customer/Models/user_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
+import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Utils/app_validators.dart';
 import 'package:car_booking_customer/Views/Authentication/Widgets/auth_common_widget.dart';
 import 'package:car_booking_customer/main.dart';
@@ -21,6 +21,10 @@ class PersonalDetailScreen extends StatelessWidget {
   final phonecontroller = TextEditingController();
   final emailcontroller = TextEditingController();
   final namecontroller = TextEditingController();
+  final passwordcontroller = TextEditingController();
+
+  // PASSWORD ICON VALUE
+  RxBool passwordshowBool = true.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +73,22 @@ class PersonalDetailScreen extends StatelessWidget {
                   suffixicon: styleSheet.icons.mail,
                   keyboardtype: TextInputType.emailAddress,
                 ),
+                styleSheet.services.addheight(15.h),
+                Obx(
+                  () => PrimaryTextFormField(
+                    controller: passwordcontroller,
+                    validator: PasswordValidator(),
+                    title: LanguageConst.password.tr,
+                    hinttext: LanguageConst.enterP.tr,
+                    suffixicon: passwordshowBool.value
+                        ? styleSheet.icons.noVigible
+                        : styleSheet.icons.vigible,
+                    obscureText: passwordshowBool.value,
+                    suffixiconOnTap: () {
+                      passwordshowBool.value = !passwordshowBool.value;
+                    },
+                  ),
+                )
               ],
             ),
           ),
@@ -87,15 +107,9 @@ class PersonalDetailScreen extends StatelessWidget {
 
   _getValideTextField() async {
     if (_key.currentState!.validate()) {
-      // Get.toNamed(RoutesName.addressDetailScreen);
-      await userController.signup({
-        "user": UserModel(
-                email: emailcontroller.text,
-                name: namecontroller.text,
-                phonenumber: "9466051616")
-            .tomap(),
-        "password": phonecontroller.text,
-      });
+
+      
+      Get.toNamed(RoutesName.addressDetailScreen);
     }
   }
 }
