@@ -1,5 +1,4 @@
 import 'package:blurrycontainer/blurrycontainer.dart';
-import 'package:car_booking_customer/Classes/manage_data.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

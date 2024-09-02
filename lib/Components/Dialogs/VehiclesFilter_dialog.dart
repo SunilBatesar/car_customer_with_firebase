@@ -131,6 +131,7 @@ class _FilterDialogState extends State<FilterDialog> {
               child: SimpleButton(
                 title: "Save",
                 onPressed: () {
+                  // ignore: avoid_print
                   print(selectedOptions);
                   Get.back();
                 },

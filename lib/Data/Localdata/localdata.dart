@@ -1,4 +1,3 @@
-import 'package:car_booking_customer/Components/Tiles/transaction_tile.dart';
 import 'package:car_booking_customer/Models/account_model.dart';
 import 'package:car_booking_customer/Models/all_models.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
@@ -118,7 +117,7 @@ class Localdata {
     {"title": "10% off on your first booking :", "subtitle": " FIRST10"},
     {"title": "20% off on your first booking :", "subtitle": " FIRST20"},
   ];
-  
+
   static List<Map<String, dynamic>> categoriesData = [
     {
       "icon": styleSheet.icons.cash,

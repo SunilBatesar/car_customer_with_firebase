@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:car_booking_customer/Models/language_model.dart';
+import 'package:car_booking_customer/Models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
@@ -12,6 +15,7 @@ class SharedPrefs {
 
   //  ALL KEYS
   static get _languageKey => "languageKey";
+  static get _userKey => "userKey";
 
   Future<dynamic> setSharedPrefs(String key, String value) async {
     return await _preferences.setString(key, value);
@@ -34,5 +38,15 @@ class SharedPrefs {
   LanguageModel getLanguagePrefe() {
     return LanguageModel.fromjson(
         json: _preferences.getString(_languageKey) ?? "");
+  }
+
+  // USER PREFE
+  Future setUserPrefe({required UserModel model}) async{
+  await  _preferences.setString(_userKey, jsonEncode(model.tomap()));
+  }
+
+  UserModel getUserPrefe() {
+    return UserModel.fromjson(
+        jsonDecode(_preferences.getString(_userKey).toString()));
   }
 }

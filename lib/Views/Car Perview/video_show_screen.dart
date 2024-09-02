@@ -27,6 +27,7 @@ class _VideoShowScreenState extends State<VideoShowScreen> {
     return Scaffold(
       body: Column(
         children: [
+          // ignore: avoid_unnecessary_containers
           Container(
             child: YoutubePlayerBuilder(
               player: YoutubePlayer(

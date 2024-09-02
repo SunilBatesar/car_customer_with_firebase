@@ -8,10 +8,14 @@ import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/firebase_options.dart';
+// import 'package:car_booking_customer/practice/firebase_data.dart';
+// import 'package:car_booking_customer/practice/product_form.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:get/get.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+
+// import 'package:provider/provider.dart';
 
 late ConstantSheet styleSheet;
 SharedPrefs prefs = SharedPrefs.instance;
@@ -27,6 +31,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // return MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider(
+    //       create: (_) => FirebaseData(),
+    //     ),
+    //   ],
+    //   child: MaterialApp(
+    //     home: ProductFormView(),
+    //   ),
+    // );
+
     return ScreenUtilInit(
       builder: (context, child) {
         styleSheet = ConstantSheet.instance;

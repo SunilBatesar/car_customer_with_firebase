@@ -3,7 +3,7 @@ import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/Dialogs/payment_dialog.dart';
 import 'package:car_booking_customer/Components/Tiles/address_tile.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
-import 'package:car_booking_customer/Components/cards/bookingcards/bookingTime.dart';
+import 'package:car_booking_customer/Components/cards/bookingcards/bookingtime.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';

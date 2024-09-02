@@ -1,0 +1,3 @@
+class ClassName {
+  String? title;
+}

@@ -23,7 +23,6 @@ class _BookingsCarTileState extends State<BookingsCarTile> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final RenderBox renderBox =

@@ -1,3 +1,5 @@
+// ignore_for_file: unrelated_type_equality_checks
+
 import 'dart:async';
 
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';

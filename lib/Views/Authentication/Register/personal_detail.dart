@@ -4,7 +4,6 @@ import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/TextFields/primary_text_form_field.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
-import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Utils/app_validators.dart';
 import 'package:car_booking_customer/Views/Authentication/Widgets/auth_common_widget.dart';
 import 'package:car_booking_customer/main.dart';
@@ -14,7 +13,6 @@ import 'package:get/get.dart';
 
 class PersonalDetailScreen extends StatelessWidget {
   PersonalDetailScreen({super.key});
-  final usercontroller = Get.find<UserController>();
 
   final _key = GlobalKey<FormState>();
   final userController = Get.find<UserController>();
@@ -89,7 +87,8 @@ class PersonalDetailScreen extends StatelessWidget {
 
   _getValideTextField() {
     if (_key.currentState!.validate()) {
-      Get.toNamed(RoutesName.addressDetailScreen);
+      // Get.toNamed(RoutesName.addressDetailScreen);
+      userController.signup({});
     }
   }
 }

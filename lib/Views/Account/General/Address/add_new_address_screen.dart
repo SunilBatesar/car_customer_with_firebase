@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors_in_immutables
+// ignore_for_file: prefer_const_constructors_in_immutables, unused_element
 
 import 'dart:async';
 
@@ -31,7 +31,6 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
 
   MapType _currentMapType = MapType.normal;
 
-  // ignore: unused_element
   void _onMapTypeButtonPressed() {
     setState(() {
       _currentMapType = _currentMapType == MapType.normal
@@ -83,7 +82,7 @@ class _AddNewAddressScreenState extends State<AddNewAddressScreen> {
                   iconColor: styleSheet.colors.gray,
                   icon2: styleSheet.icons.mic,
                   icon2Color: styleSheet.colors.gray,
-                  iconOnTap: (){},
+                  iconOnTap: () {},
                 ),
                 styleSheet.services.addheight(15.h),
                 SizedBox(
