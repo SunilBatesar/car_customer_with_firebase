@@ -1,3 +1,5 @@
+import 'package:car_booking_customer/Models/firebase_response_model.dart';
+
 class UserModel {
   String? id,
       name,
@@ -98,22 +100,22 @@ class UserModel {
   }
 
   // From Json
-  UserModel.fromjson(Map<String, dynamic> json)
-      : id = json["id"] ?? "",
-        name = json["name"] ?? "",
-        email = json["email"] ?? "",
-        phonenumber = json["phonenumber"] ?? "",
-        image = json["image"] ?? "",
-        owner = json["owner"] ?? false,
-        customer = json["customer"] ?? false,
-        titleAddress = json["titleAddress"] ?? "",
-        streetaddress = json["streetaddress"] ?? "",
-        country = json["country"] ?? "",
-        state = json["state"] ?? "",
-        city = json["city"] ?? "",
-        postalcode = json["postalcode"] ?? "",
-        documenttype = json["documenttype"] ?? "",
-        documentnumber = json["documentnumber"] ?? "",
-        documentexpirydate = json["documentexpirydate"] ?? "",
-        documentimage = json["documentimage"] ?? "";
+  UserModel.fromjson(FirebaseResponseModel json)
+      : id = json.docId,
+        name = json.data["name"] ?? "",
+        email = json.data["email"] ?? "",
+        phonenumber = json.data["phonenumber"] ?? "",
+        image = json.data["image"] ?? "",
+        owner = json.data["owner"] ?? false,
+        customer = json.data["customer"] ?? false,
+        titleAddress = json.data["titleAddress"] ?? "",
+        streetaddress = json.data["streetaddress"] ?? "",
+        country = json.data["country"] ?? "",
+        state = json.data["state"] ?? "",
+        city = json.data["city"] ?? "",
+        postalcode = json.data["postalcode"] ?? "",
+        documenttype = json.data["documenttype"] ?? "",
+        documentnumber = json.data["documentnumber"] ?? "",
+        documentexpirydate = json.data["documentexpirydate"] ?? "",
+        documentimage = json.data["documentimage"] ?? "";
 }

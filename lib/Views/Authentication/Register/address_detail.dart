@@ -133,6 +133,7 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
                           ),
                           styleSheet.services.addheight(10.w),
                           TextFormField(
+                            controller: postalController,
                             validator: (value) =>
                                 TextValidator().validator(value),
                             keyboardType: TextInputType.number,
@@ -172,6 +173,15 @@ class _AddressDetailScreenState extends State<AddressDetailScreen> {
   _getValideTextField() {
     if (_key.currentState!.validate()) {
       if (cityvalue != null && statevalue != null && countryvalue != null) {
+        final data = userController.userdata.data!.copyWith(
+          titleAddress: addresscontroller.text.trim(),
+          streetaddress: streetaddresscontroller.text.trim(),
+          country: countryvalue,
+          state: statevalue,
+          city: cityvalue,
+          postalcode: postalController.text.trim(),
+        );
+        userController.setUserData(data);
         Get.toNamed(RoutesName.kyclDetailScreen);
       } else {
         Utils.erroSnakeBar("Please enter field");

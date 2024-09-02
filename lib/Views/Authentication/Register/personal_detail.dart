@@ -3,6 +3,7 @@
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/TextFields/primary_text_form_field.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
+import 'package:car_booking_customer/Models/user_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Utils/app_validators.dart';
@@ -107,8 +108,14 @@ class PersonalDetailScreen extends StatelessWidget {
 
   _getValideTextField() async {
     if (_key.currentState!.validate()) {
+      final data = UserModel(
+        name: namecontroller.text.trim(),
+        phonenumber: phonecontroller.text.trim(),
+        email: emailcontroller.text.trim(),
+      );
+      userController.setUserData(data);
+      userController.setPassword(passwordcontroller.text.trim());
 
-      
       Get.toNamed(RoutesName.addressDetailScreen);
     }
   }
