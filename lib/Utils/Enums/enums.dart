@@ -1,10 +1,14 @@
 // ignore_for_file: constant_identifier_names
 
-// AUTH STATE
+/// AUTH STATE
 enum AuthState { LOGIN, SIGNUP, LOGOUT }
 
-// PAYMENT STATE
+/// PAYMENT STATE
 enum PaymentState { CAR, ADDRESS, PAYMENT }
 
-// DATA STATE
-enum DataState { PENDING, COMPLETE, ERROR }
+/// DATA STATE
+enum DataState { PENDING, COMPLETE, ERROR ,ISLOADING}
+
+/// POST DATA REQUEST TYPE
+enum PostDataREquestType{ADD}
+

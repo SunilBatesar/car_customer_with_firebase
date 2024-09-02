@@ -72,8 +72,6 @@ class _BottomBarScreenState extends State<BottomBarScreen>
 
   @override
   Widget build(BuildContext context) {
-    print("Current inde 8********");
-    print(label[widget.currentIndex]);
     return WillPopScope(
       onWillPop: _onwillpop,
       child: Scaffold(

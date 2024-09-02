@@ -1,10 +1,13 @@
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
+import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 class CoustomProfileTile extends StatelessWidget {
-  const CoustomProfileTile({super.key});
+  CoustomProfileTile({super.key});
+  final userController = Get.find<UserController>();
 
   @override
   Widget build(BuildContext context) {
@@ -42,12 +45,12 @@ class CoustomProfileTile extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "John Doe",
+                            userController.userdata.data!.name ?? "",
                             style: styleSheet.textTheme.fs20Medium
                                 .copyWith(color: styleSheet.colors.white),
                           ),
                           Text(
-                            "john@gmail.com",
+                            userController.userdata.data!.email!,
                             style: styleSheet.textTheme.fs14Normal
                                 .copyWith(color: styleSheet.colors.white),
                           ),

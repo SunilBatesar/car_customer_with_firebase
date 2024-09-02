@@ -61,9 +61,15 @@ class _KyclDetailScreenState extends State<KyclDetailScreen> {
               ),
               TextButton(
                   onPressed: () {
-                    Future.delayed(Duration(seconds: 1),
-                        () => Get.offNamed(RoutesName.loginScreen));
-                    Get.dialog(AccountCreatedSucessfullyDialog());
+                    userController.signup({
+                      "user": userController.userdata.data!.tomap()
+                    }).whenComplete(
+                      () {
+                        Future.delayed(Duration(seconds: 1),
+                            () => Get.offNamed(RoutesName.loginScreen));
+                        Get.dialog(AccountCreatedSucessfullyDialog());
+                      },
+                    );
                   },
                   child: Text(
                     LanguageConst.skip.tr,
@@ -188,9 +194,18 @@ class _KyclDetailScreenState extends State<KyclDetailScreen> {
   _getValideTextField() {
     if (_key.currentState!.validate()) {
       if (datecontrollers.text.isNotEmpty && documentvalue != null) {
-        Future.delayed(
-            Duration(seconds: 1), () => Get.offNamed(RoutesName.loginScreen));
-        Get.dialog(AccountCreatedSucessfullyDialog());
+        final data = userController.userdata.data!.copyWith(
+          documenttype: documentvalue,
+          documentnumber: phonecontroller.text.trim(),
+          documentexpirydate: datecontrollers.text.trim(),
+        );
+        userController.signup({"user": data.tomap()}).whenComplete(
+          () {
+            Future.delayed(Duration(seconds: 1),
+                () => Get.offNamed(RoutesName.loginScreen));
+            Get.dialog(AccountCreatedSucessfullyDialog());
+          },
+        );
       } else {
         Utils.erroSnakeBar("Please enter field");
       }
