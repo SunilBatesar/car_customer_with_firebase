@@ -49,6 +49,7 @@ class LogoutDialog extends StatelessWidget {
                     child: PrimaryButton(
                         title: "Yes",
                         onPressed: () {
+                          prefs.removSharedPrefs(prefs.userKey);
                           Get.offAllNamed(RoutesName.loginScreen);
                         })),
               ],

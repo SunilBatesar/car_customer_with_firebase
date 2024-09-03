@@ -1,12 +1,14 @@
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
-import 'package:car_booking_customer/Components/Dialogs/exit_dialog.dart';
 import 'package:car_booking_customer/Components/TextFields/secondary_text_form_field.dart';
 import 'package:car_booking_customer/Components/Tiles/bookingcar_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/rentalcar_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/review_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixbutton.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
+import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
+import 'package:car_booking_customer/Utils/Enums/enums.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Views/BottomNavigationBar/bottom_navigationbar.dart';
 import 'package:car_booking_customer/Views/Car%20Perview/carperview_screen.dart';
@@ -27,8 +29,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentindex = 0;
   final searchController = TextEditingController();
+  final carController = Get.find<CarController>();
   @override
   Widget build(BuildContext context) {
+    // print("-----Home");
+    // print(carController.carData.data!.map((e) => e.discount));
+    // print("-----Home");
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         statusBarColor: styleSheet.colors.primary, // Status bar color
@@ -95,8 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         controller: searchController,
                         icon: styleSheet.icons.search,
                         hinttext: LanguageConst.searchFRAC.tr,
-                        iconOnTap: () {
-                          Get.dialog(ExitDialog());
+                        iconOnTap: () async {
+                          await WishListController().setWishData("555555555");
+                          // Get.dialog(ExitDialog());
                         },
                       ),
                     ),
@@ -231,25 +238,33 @@ class _HomeScreenState extends State<HomeScreen> {
                           }),
                       styleSheet.services.addheight(15.h),
                       /** TOP RENTAL CARS STARTS HERE */
-                      AspectRatio(
-                        aspectRatio: 1.6,
-                        child: ListView.builder(
-                          clipBehavior: Clip.none,
-                          itemCount: 5,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) => Padding(
-                            padding: EdgeInsets.only(right: 15.w),
-                            child: AspectRatio(
-                                aspectRatio: 1,
-                                child: RentalCarTile(
-                                  onPressed: () {
-                                    Get.to(() => CarPreviewScreen());
-                                  },
-                                )),
-                          ),
-                        ),
-                      ),
+                      carController.carData.state == DataState.COMPLETE
+                          ? AspectRatio(
+                              aspectRatio: 1.6,
+                              child: ListView.builder(
+                                clipBehavior: Clip.none,
+                                itemCount: carController.carData.data!.length,
+                                shrinkWrap: true,
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (context, index) => Padding(
+                                  padding: EdgeInsets.only(right: 15.w),
+                                  child: AspectRatio(
+                                      aspectRatio: 1,
+                                      child: RentalCarTile(
+                                        id: carController
+                                            .carData.data![index].id!,
+                                        onPressed: () {
+                                          Get.to(() => CarPreviewScreen(),
+                                              arguments: {
+                                                "id": carController
+                                                    .carData.data![index].id!
+                                              });
+                                        },
+                                      )),
+                                ),
+                              ),
+                            )
+                          : SizedBox(),
                       styleSheet.services.addheight(15.h),
                       /** MY BOOKINGS STARTS HERE */
 

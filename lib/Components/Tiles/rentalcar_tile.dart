@@ -1,4 +1,6 @@
 import 'package:car_booking_customer/Components/Tiles/car_part_text_icon.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
+import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
@@ -7,9 +9,11 @@ import 'package:get/get.dart';
 
 class RentalCarTile extends StatefulWidget {
   final Function onPressed;
+  final String id;
   const RentalCarTile({
     super.key,
     required this.onPressed,
+    required this.id,
   });
 
   @override
@@ -18,9 +22,9 @@ class RentalCarTile extends StatefulWidget {
 
 class _RentalCarTileState extends State<RentalCarTile> {
   final GlobalKey _cardKey = GlobalKey();
+  final carController = Get.find<CarController>();
 
   Size _cardHeight = const Size(0, 0);
-
   @override
   void initState() {
     super.initState();
@@ -34,6 +38,9 @@ class _RentalCarTileState extends State<RentalCarTile> {
 
   @override
   Widget build(BuildContext context) {
+    final cardata = carController.carData.data!
+        .firstWhere((e) => e.id == widget.id, orElse: () => CarModel());
+
     return GestureDetector(
       onTap: () {
         widget.onPressed();
@@ -74,7 +81,7 @@ class _RentalCarTileState extends State<RentalCarTile> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "₹ 1,200",
+                      "₹ ${cardata.price}",
                       style: styleSheet.textTheme.fs24Bold
                           .copyWith(color: styleSheet.colors.white),
                     ).paddingOnly(left: 19.w, bottom: 5.h),
@@ -85,15 +92,16 @@ class _RentalCarTileState extends State<RentalCarTile> {
                         Row(
                           children: [
                             CarPartTextIcon(
-                                title: LanguageConst.petrol.tr,
+                                title: cardata.fuel ?? "",
                                 iconpath: styleSheet.icons.petrol),
                             styleSheet.services.addwidth(10.w),
                             CarPartTextIcon(
-                                title: LanguageConst.auto.tr,
+                                title: cardata.transmission ?? "",
                                 iconpath: styleSheet.icons.gear),
                             styleSheet.services.addwidth(10.w),
                             CarPartTextIcon(
-                                title: "7 ${LanguageConst.seats.tr}",
+                                title:
+                                    "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
                                 iconpath: styleSheet.icons.seat),
                           ],
                         ).paddingOnly(right: 10.w, bottom: 10.h),
@@ -129,7 +137,7 @@ class _RentalCarTileState extends State<RentalCarTile> {
                         bottomRight: Radius.circular(14.r),
                         topRight: Radius.circular(14.r))),
                 child: Text(
-                  "Toyota Innova",
+                  cardata.carmodel ?? "",
                   style: styleSheet.textTheme.fs18Normal
                       .copyWith(color: styleSheet.colors.white),
                 ),

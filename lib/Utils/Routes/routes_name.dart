@@ -1,6 +1,7 @@
 class RoutesName {
   // ---- Auth Route Name
-  static const String loginScreen = "/";
+  static const String splashScreen = "/";
+  static const String loginScreen = "/loginScreen";
   static const String forgetScreen = "/ForgetScreen";
   static const String verificationScreen = "/VerificationScreen";
   static const String createNewPasswordScreen = "/CreateNewPasswordScreen";

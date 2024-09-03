@@ -40,7 +40,6 @@ class NetworkapiService extends BaseapiService {
       if (path is CollectionReference) {
         response = path.add(data);
       } else {
-        
         response = (path as DocumentReference).set(data);
       }
     } catch (e) {
@@ -59,6 +58,17 @@ class NetworkapiService extends BaseapiService {
         return await getDataQuery(path);
       } else {
         return await getDataDocoment(path as DocumentReference);
+      }
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future update(path, Map<String, dynamic> data) async {
+    try {
+      if (path is DocumentReference) {
+        await path.update(data);
       }
     } catch (e) {
       rethrow;

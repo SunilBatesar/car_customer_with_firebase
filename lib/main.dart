@@ -8,7 +8,6 @@ import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/firebase_options.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: false,
               scaffoldBackgroundColor: styleSheet.colors.bgclr),
           getPages: appRoutes,
-          initialRoute: RoutesName.loginScreen,
+          initialRoute: RoutesName.splashScreen,
           initialBinding: AppInitialbinding(),
         );
       },

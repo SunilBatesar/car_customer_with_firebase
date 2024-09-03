@@ -1,18 +1,18 @@
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Views/Account/General/Address/add_new_address_screen.dart';
 import 'package:car_booking_customer/Views/Account/General/Address/my_address_screen.dart';
+import 'package:car_booking_customer/Views/Account/General/Language/language_screen.dart';
+import 'package:car_booking_customer/Views/Account/General/notification_setting_screen.dart';
+import 'package:car_booking_customer/Views/Account/General/profile_screen.dart';
+import 'package:car_booking_customer/Views/Account/General/transaction_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/Help%20Service/Help_and_Support_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/Help%20Service/customer_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/Help%20Service/deleteaccount_screen.dart';
-import 'package:car_booking_customer/Views/Account/General/Language/language_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/Payment%20Method/addbank_card_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/Payment%20Method/payment_method_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/faq_screen.dart';
-import 'package:car_booking_customer/Views/Account/General/notification_setting_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/privacy_policy_screen.dart';
-import 'package:car_booking_customer/Views/Account/General/profile_screen.dart';
 import 'package:car_booking_customer/Views/Account/Settings%20&%20Privacy/terms_condition_screen.dart';
-import 'package:car_booking_customer/Views/Account/General/transaction_screen.dart';
 import 'package:car_booking_customer/Views/Authentication/Register/address_detail.dart';
 import 'package:car_booking_customer/Views/Authentication/Register/kyc_detail.dart';
 import 'package:car_booking_customer/Views/Authentication/Register/personal_detail.dart';
@@ -28,11 +28,13 @@ import 'package:car_booking_customer/Views/Home/all_cars_view_screen.dart';
 import 'package:car_booking_customer/Views/Home/all_reviews_screen.dart';
 import 'package:car_booking_customer/Views/Home/home_screen.dart';
 import 'package:car_booking_customer/Views/Home/notification_screen.dart';
+import 'package:car_booking_customer/Views/OnBoarding/splash.dart';
 import 'package:car_booking_customer/Views/Payment%20and%20Address/wish_list_screen.dart';
 import 'package:car_booking_customer/Views/Vehicle%20Boooking/find_my_car.dart';
 import 'package:get/get.dart';
 
 final List<GetPage<dynamic>> appRoutes = [
+  GetPage(name: RoutesName.splashScreen, page: () => SplashScreen()),
   // AUTH GETPAGE
   GetPage(name: RoutesName.loginScreen, page: () => LoginScreen()),
   GetPage(name: RoutesName.forgetScreen, page: () => ForgetScreen()),
@@ -44,7 +46,8 @@ final List<GetPage<dynamic>> appRoutes = [
 
   // HOME GETPAGE
   GetPage(name: RoutesName.homeScreen, page: () => const HomeScreen()),
-  GetPage(name: RoutesName.notificationScreen, page: () =>  NotificationScreen()),
+  GetPage(
+      name: RoutesName.notificationScreen, page: () => NotificationScreen()),
   GetPage(
       name: RoutesName.allReviewsScreen, page: () => const AllReviewsScreen()),
 

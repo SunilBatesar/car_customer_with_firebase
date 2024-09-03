@@ -32,6 +32,19 @@ class UserController extends GetxController {
     update();
   }
 
+  // GET USER DATA FIREBASE
+  Future<void> getDataUser(String id) async {
+    try {
+      final response = await _service.get(styleSheet.apis.userDocument(id))
+          as FirebaseResponseModel;
+      if (response.docId.isNotEmpty) {
+        _userdata = DataResponse.complete(UserModel.fromjson(response));
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   // Sign Up FUNCTION
   Future<void> signup(Map<String, dynamic> jsondata) async {
     // USER STATE SET ISLOADING
@@ -53,7 +66,7 @@ class UserController extends GetxController {
         // POST USER DATA IN FIREBASE DOC
         await _service.post(styleSheet.apis.userDocument(id), data.tomap());
         // SET USER DATA SharedPreferences
-        await prefs.setUserPrefe(model: data);
+        await prefs.setSharedPrefs(prefs.userKey, id);
         // SET DATA
         _userdata = DataResponse.complete(data);
       }
@@ -84,9 +97,11 @@ class UserController extends GetxController {
               state: AuthState.LOGIN,
               json: {"email": data.email, "password": password});
           // SET USER DATA SharedPreferences
-          await prefs.setUserPrefe(model: data);
+          await prefs.setSharedPrefs(prefs.userKey, snapshot.first.docId);
           // SET DATA
           _userdata = DataResponse.complete(data);
+          // NEXT SCREEN
+          Get.offNamed(RoutesName.bottombarScreen);
         }
       }
     } catch (e) {

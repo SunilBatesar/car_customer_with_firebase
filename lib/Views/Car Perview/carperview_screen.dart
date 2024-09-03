@@ -3,6 +3,8 @@ import 'package:car_booking_customer/Components/Buttons/second_primary_button.da
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Components/Tiles/rentalcar_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
+import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Views/Car%20Perview/image_video_list_screen.dart';
@@ -21,10 +23,14 @@ class CarPreviewScreen extends StatefulWidget {
 }
 
 class _CarPreviewScreenState extends State<CarPreviewScreen> {
+  final id = Get.arguments["id"];
   int currentindex = 0;
-
+  final carController = Get.find<CarController>();
   @override
   Widget build(BuildContext context) {
+    final cardata = carController.carData.data!
+        .firstWhere((e) => e.id == id, orElse: () => CarModel());
+
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(15.sp).copyWith(top: 0),
@@ -110,11 +116,11 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                       RichText(
                           text: TextSpan(children: [
                         TextSpan(
-                            text: "Toyota Innova",
+                            text: cardata.carmodel,
                             style: styleSheet.textTheme.fs24Normal
                                 .copyWith(color: styleSheet.colors.black)),
                         TextSpan(
-                            text: " ( 2023 )",
+                            text: " ( ${cardata.manufactureyear} )",
                             style: styleSheet.textTheme.fs16Normal
                                 .copyWith(color: styleSheet.colors.black))
                       ])),
@@ -166,7 +172,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                   child: RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: "₹ 1,200 ",
+                        text: "₹ ${cardata.price} ",
                         style: styleSheet.textTheme.fs20Medium),
                     TextSpan(
                         text: LanguageConst.day.tr,
@@ -187,7 +193,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                       ),
                       styleSheet.services.addheight(15.h),
                       Text(
-                        "Lorem ipsum dolor sit amet consectetur. Tempus egestas consequat sed ut consectetur id magna commodo. Ac eget mauris dui pretium. Sed mauris nulla curabitur facilisis tristique enim fringilla ipsum. Nibh et laoreet egestas tortor sodales. Fringilla enim egestas sapien nisl.",
+                        cardata.description ?? "",
                         style: styleSheet.textTheme.fs14Normal
                             .copyWith(color: styleSheet.colors.gray),
                       ),
@@ -313,31 +319,32 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.carMake.tr,
-                              suffixtext: "Mercedes",
+                              suffixtext: cardata.companyname ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.transmission.tr,
-                              suffixtext: "Automatic",
+                              suffixtext: cardata.transmission ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.color.tr,
-                              suffixtext: "Orange",
+                              suffixtext: cardata.carcolor ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.licensePlateNo.tr,
-                              suffixtext: "HR4204 45AC",
+                              suffixtext: cardata.platenumber ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.seatingCapacity.tr,
-                              suffixtext: "4 ${LanguageConst.seats.tr}",
+                              suffixtext:
+                                  "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                           ],
@@ -363,6 +370,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                             child: AspectRatio(
                                 aspectRatio: 1,
                                 child: RentalCarTile(
+                                  id: id,
                                   onPressed: () {
                                     Get.toNamed(RoutesName.carPreviewScreen);
                                   },

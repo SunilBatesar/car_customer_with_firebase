@@ -184,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
         "email": emailController.text,
         "password": passwordController.text,
       });
-      Get.offNamed(RoutesName.bottombarScreen);
+      
     }
   }
 }
