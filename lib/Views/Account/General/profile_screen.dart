@@ -5,8 +5,11 @@ import 'package:car_booking_customer/Components/Bottom%20Sheets/image_pick_botto
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/TextFields/primary_text_form_field.dart';
 import 'package:car_booking_customer/Components/TextFields/secondary_text_form_field.dart';
+import 'package:car_booking_customer/Controllers/user_controller.dart';
+import 'package:car_booking_customer/Data/Network/firestorage.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -21,15 +24,27 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final nameController = TextEditingController();
-
   final emailController = TextEditingController();
-
   final mobileController = TextEditingController();
-
   final addressController = TextEditingController();
 
   // File
   File? imageFile;
+  @override
+  void initState() {
+    super.initState();
+    initialize();
+  }
+
+  final userController = Get.find<UserController>().userdata;
+  String userDp = "";
+  initialize() {
+    userDp = userController.data!.image.toString();
+    nameController.text = userController.data!.name.toString();
+    emailController.text = userController.data!.email.toString();
+    mobileController.text = userController.data!.phonenumber.toString();
+    addressController.text = userController.data!.titleAddress.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +69,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: Stack(children: [
                         ClipRRect(
                           borderRadius: BorderRadius.circular(1000),
-                          child: imageFile != null
-                              ? Image.file(
+                          child: imageFile == null
+                              ? (userDp.isNotEmpty
+                                  ? Image.network(
+                                      userController.data!.image!,
+                                      height: 75.sp,
+                                      width: 75.sp,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      styleSheet.images.Bg_img,
+                                      height: 75.sp,
+                                      width: 75.sp,
+                                      fit: BoxFit.cover,
+                                    ))
+                              : Image.file(
                                   imageFile!,
-                                  height: 75.sp,
-                                  width: 75.sp,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.asset(
-                                  styleSheet.images.Bg_img,
                                   height: 75.sp,
                                   width: 75.sp,
                                   fit: BoxFit.cover,
@@ -125,7 +147,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     styleSheet.services.addheight(20.h),
                     SecondaryTextFormField(
-                      controller: mobileController,
+                      controller: addressController,
                       icon: styleSheet.icons.location2,
                       hinttext: LanguageConst.location.tr,
                       title: LanguageConst.location.tr,
@@ -143,7 +165,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: EdgeInsets.all(15.0.sp).copyWith(top: 0),
         child: PrimaryButton(
           title: LanguageConst.save.tr,
-          onPressed: () {},
+          onPressed: () async {
+            final _storageFunction = FirestorageFuction();
+
+            String userImageURL = userDp;
+
+            if (imageFile != null && imageFile!.path.isNotEmpty) {
+              if (userDp.isNotEmpty) {
+                userImageURL =
+                    await _storageFunction.updatefile(userDp, imageFile!);
+              } else {
+                userImageURL = await _storageFunction.uploadFile(imageFile!);
+              }
+            }
+          },
           isExpanded: true,
         ),
       ),

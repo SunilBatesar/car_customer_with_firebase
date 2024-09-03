@@ -6,6 +6,7 @@ import 'package:car_booking_customer/Components/Tiles/review_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixbutton.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
+import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Enums/enums.dart';
@@ -30,6 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentindex = 0;
   final searchController = TextEditingController();
   final carController = Get.find<CarController>();
+  final userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
     // print("-----Home");
@@ -71,12 +73,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Mr John leo",
-                                style: styleSheet.textTheme.fs20Normal
+                                userController.userdata.data!.name ?? "",
+                                style: styleSheet.textTheme.fs20Medium
                                     .copyWith(color: styleSheet.colors.white),
                               ),
                               Text(
-                                "johndeo90@gmail.com",
+                                userController.userdata.data!.email!,
                                 style: styleSheet.textTheme.fs14Normal
                                     .copyWith(color: styleSheet.colors.white),
                               )

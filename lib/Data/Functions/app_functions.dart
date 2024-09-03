@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:math';
 
 class AppFunctions {
@@ -16,7 +18,7 @@ class AppFunctions {
 
     for (var i = 0; i < length; i++) {
       String character = randomChoice();
-      id += character; 
+      id += character;
     }
     print("Id = $id");
     return id;
