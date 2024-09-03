@@ -43,8 +43,9 @@ final List<GetPage<dynamic>> appRoutes = [
       page: () => CreateNewPasswordScreen()),
 
   // HOME GETPAGE
-  GetPage(name: RoutesName.homeScreen, page: () => const HomeScreen()),
-  GetPage(name: RoutesName.notificationScreen, page: () =>  NotificationScreen()),
+  GetPage(name: RoutesName.homeScreen, page: () => HomeScreen()),
+  GetPage(
+      name: RoutesName.notificationScreen, page: () => NotificationScreen()),
   GetPage(
       name: RoutesName.allReviewsScreen, page: () => const AllReviewsScreen()),
 

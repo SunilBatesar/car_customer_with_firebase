@@ -5,6 +5,7 @@ import 'package:car_booking_customer/Components/Tiles/bookingcar_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/rentalcar_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/review_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixbutton.dart';
+import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
@@ -27,6 +28,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int currentindex = 0;
   final searchController = TextEditingController();
+  final userController = Get.find<UserController>();
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion(
@@ -65,12 +67,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Mr John leo",
-                                style: styleSheet.textTheme.fs20Normal
+                                userController.userdata.data!.name ?? "",
+                                style: styleSheet.textTheme.fs20Medium
                                     .copyWith(color: styleSheet.colors.white),
                               ),
                               Text(
-                                "johndeo90@gmail.com",
+                                userController.userdata.data!.email!,
                                 style: styleSheet.textTheme.fs14Normal
                                     .copyWith(color: styleSheet.colors.white),
                               )

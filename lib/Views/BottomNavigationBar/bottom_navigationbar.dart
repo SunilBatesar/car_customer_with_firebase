@@ -40,7 +40,7 @@ class _BottomBarScreenState extends State<BottomBarScreen>
   }
 
   List<Widget> screenList = [
-    const HomeScreen(),
+    HomeScreen(),
     BookingScreen(),
     const AccountScreen(),
   ];
