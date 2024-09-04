@@ -15,3 +15,21 @@ class DeleteAccountModel {
     required this.title,
   });
 }
+
+class MessageModel {
+  String mostRecentMessage;
+  String messageDate;
+  String type;
+
+  MessageModel(this.mostRecentMessage, this.messageDate, this.type);
+}
+class AccountModel {
+  String id;
+  String title;
+  String icon;
+  AccountModel({
+    required this.id,
+    required this.title,
+    required this.icon,
+  });
+}

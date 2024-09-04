@@ -1,5 +1,6 @@
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
+import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
@@ -22,13 +23,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   data() async {
     final carController = Get.find<CarController>();
+    final wishListController = Get.find<WishListController>();
     await carController.getCar();
     final userId = prefs.getSharedPrefs(prefs.userKey);
     final userController = Get.find<UserController>();
     Future.delayed(Duration(milliseconds: 100), () async {
       if (userId.isNotEmpty) {
         await userController.getDataUser(userId);
-
+        wishListController.getWishData(userId);
         Get.toNamed(RoutesName.bottombarScreen);
       } else {
         Get.toNamed(RoutesName.loginScreen);

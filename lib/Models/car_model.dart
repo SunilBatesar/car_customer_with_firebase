@@ -78,7 +78,7 @@ class CarModel {
         ammount = json.data["ammount"]?.toDouble();
 
   //  ORDER TO JSON
-  Map<String, dynamic> toOrderjson() {
+  Map<String, dynamic> toBookingsjson() {
     return {
       "title": title ?? "",
       "price": price ?? 0.0,
@@ -90,7 +90,7 @@ class CarModel {
   }
 
   //  ORDER FROM
-  CarModel.fromCarOrder(FirebaseResponseModel json)
+  CarModel.fromCarBookings(FirebaseResponseModel json)
       : id = json.docId,
         title = json.data["title"] ?? "",
         price = json.data["price"]?.toDouble(),

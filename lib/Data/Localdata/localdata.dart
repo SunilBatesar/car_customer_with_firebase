@@ -1,4 +1,3 @@
-import 'package:car_booking_customer/Models/account_model.dart';
 import 'package:car_booking_customer/Models/all_models.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';

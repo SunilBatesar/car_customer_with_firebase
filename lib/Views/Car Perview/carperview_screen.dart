@@ -4,6 +4,7 @@ import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Components/Tiles/rentalcar_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
+import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
@@ -30,18 +31,31 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
   Widget build(BuildContext context) {
     final cardata = carController.carData.data!
         .firstWhere((e) => e.id == id, orElse: () => CarModel());
-
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(15.sp).copyWith(top: 0),
         child: Row(
           children: [
-            SecondPrimaryButton(
-              title: LanguageConst.wishList.tr,
-              onPressed: () {},
-              icon: styleSheet.icons.black_heart,
-              backGroundTransparent: true,
-            ),
+            GetBuilder<WishListController>(builder: (wishListController) {
+              final wishListvalue =
+                  wishListController.wishListData.any((e) => e == id);
+
+              return SecondPrimaryButton(
+                title: LanguageConst.wishList.tr,
+                onPressed: () async {
+                  if (wishListvalue) {
+                    await wishListController.remove(id);
+                  } else {
+                    await wishListController.setWishData(id);
+                  }
+                },
+                iconColor: wishListvalue
+                    ? styleSheet.colors.white
+                    : styleSheet.colors.black,
+                icon: styleSheet.icons.black_heart,
+                backGroundTransparent: wishListvalue ? false : true,
+              );
+            }),
             styleSheet.services.addwidth(15.w),
             Expanded(
               child: PrimaryButton(

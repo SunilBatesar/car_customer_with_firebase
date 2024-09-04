@@ -1,7 +1,7 @@
 // ignore_for_file: non_constant_identifier_names
 
 import 'package:car_booking_customer/Components/Widgets/message_contain.dart';
-import 'package:car_booking_customer/Models/messagemodel.dart';
+import 'package:car_booking_customer/Models/all_models.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';

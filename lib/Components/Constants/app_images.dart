@@ -55,6 +55,7 @@ class AppIcons {
   String search = "assets/icon/search.svg";
   String notification = "assets/icon/notification.svg";
   String vector = "assets/icon/vector.svg";
+  String heart = "assets/icon/heart.svg";
   String black_heart = "assets/icon/black_heart.svg";
   String wallet = "assets/icon/wallet.svg";
   String card = "assets/icon/card.svg";
