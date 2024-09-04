@@ -125,6 +125,18 @@ class UserController extends GetxController {
     }
   }
 
+  //  USER PROFILE UPDATE //
+  Future<void> updateuserprofile(UserModel models) async {
+    try {
+      await _service.update(
+          styleSheet.apis.userDocument(_userdata.data!.id!), models.tomap());
+      _userdata = DataResponse.complete(models);
+      update();
+    } catch (e) {
+      e.toString();
+    }
+  }
+
   Future<dynamic> deleteKey() async {
     try {
       await styleSheet.apis
