@@ -36,14 +36,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     initialize();
   }
 
-  final userController = Get.find<UserController>().userdata;
+  final userController = Get.find<UserController>();
   String userDp = "";
   initialize() {
-    userDp = userController.data!.image.toString();
-    nameController.text = userController.data!.name.toString();
-    emailController.text = userController.data!.email.toString();
-    mobileController.text = userController.data!.phonenumber.toString();
-    addressController.text = userController.data!.titleAddress.toString();
+    userDp = userController.userdata.data!.image.toString();
+    emailController.text = userController.userdata.data!.email.toString();
+    mobileController.text =
+        userController.userdata.data!.phonenumber.toString();
+    nameController.text = userController.userdata.data!.name.toString();
+    addressController.text =
+        userController.userdata.data!.titleAddress.toString();
   }
 
   @override
@@ -72,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: imageFile == null
                               ? (userDp.isNotEmpty
                                   ? Image.network(
-                                      userController.data!.image!,
+                                      userController.userdata.data!.image!,
                                       height: 75.sp,
                                       width: 75.sp,
                                       fit: BoxFit.cover,
@@ -178,6 +180,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 userImageURL = await _storageFunction.uploadFile(imageFile!);
               }
             }
+            final data = userController.userdata.data!.copyWith(
+                name: nameController.text.trim(),
+                image: userImageURL,
+                phonenumber: mobileController.text.trim(),
+                titleAddress: addressController.text.trim());
+            await userController.updateuserprofile(data);
+            Get.back();
           },
           isExpanded: true,
         ),

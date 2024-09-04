@@ -54,49 +54,56 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Container(
-                          clipBehavior: Clip.antiAlias,
-                          height: 60,
-                          width: 60,
-                          decoration:
-                              const BoxDecoration(shape: BoxShape.circle),
-                          child: Image.asset(
-                            styleSheet.images.girlprofile,
-                            fit: BoxFit.cover,
+                    GetBuilder<UserController>(builder: (userController) {
+                      return Row(
+                        children: [
+                          Container(
+                              clipBehavior: Clip.antiAlias,
+                              height: 60,
+                              width: 60,
+                              decoration:
+                                  const BoxDecoration(shape: BoxShape.circle),
+                              child: userController
+                                      .userdata.data!.image!.isNotEmpty
+                                  ? Image.network(
+                                      userController.userdata.data!.image!,
+                                      fit: BoxFit.cover,
+                                    )
+                                  : Image.asset(
+                                      styleSheet.images.Bg_img,
+                                      fit: BoxFit.cover,
+                                    )),
+                          styleSheet.services.addwidth(14.w),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  userController.userdata.data!.name ?? "",
+                                  style: styleSheet.textTheme.fs20Medium
+                                      .copyWith(color: styleSheet.colors.white),
+                                ),
+                                Text(
+                                  userController.userdata.data!.email!,
+                                  style: styleSheet.textTheme.fs14Normal
+                                      .copyWith(color: styleSheet.colors.white),
+                                )
+                              ],
+                            ),
                           ),
-                        ),
-                        styleSheet.services.addwidth(14.w),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                userController.userdata.data!.name ?? "",
-                                style: styleSheet.textTheme.fs20Medium
-                                    .copyWith(color: styleSheet.colors.white),
-                              ),
-                              Text(
-                                userController.userdata.data!.email!,
-                                style: styleSheet.textTheme.fs14Normal
-                                    .copyWith(color: styleSheet.colors.white),
-                              )
-                            ],
-                          ),
-                        ),
-                        styleSheet.services.addwidth(14.w),
-                        GestureDetector(
-                          onTap: () {
-                            Get.toNamed(RoutesName.notificationScreen);
-                          },
-                          child: Icon(
-                            Icons.notifications_none,
-                            color: styleSheet.colors.white,
-                          ),
-                        )
-                      ],
-                    ),
+                          styleSheet.services.addwidth(14.w),
+                          GestureDetector(
+                            onTap: () {
+                              Get.toNamed(RoutesName.notificationScreen);
+                            },
+                            child: Icon(
+                              Icons.notifications_none,
+                              color: styleSheet.colors.white,
+                            ),
+                          )
+                        ],
+                      );
+                    }),
                     Transform(
                       transform: Matrix4.translationValues(0, 20, 0),
                       child: SecondaryTextFormField(
