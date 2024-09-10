@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
