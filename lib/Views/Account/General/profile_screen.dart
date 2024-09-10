@@ -1,3 +1,5 @@
+// ignore_for_file: no_leading_underscores_for_local_identifiers
+
 import 'dart:io';
 
 import 'package:car_booking_customer/Components/AppBar/custom_appbar.dart';
@@ -9,7 +11,6 @@ import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Data/Network/firestorage.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';

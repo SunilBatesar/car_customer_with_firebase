@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors_in_immutables
+
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/main.dart';
