@@ -6,7 +6,6 @@ import 'package:car_booking_customer/Components/Tiles/review_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixbutton.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
-import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Enums/enums.dart';
@@ -111,8 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: styleSheet.icons.search,
                         hinttext: LanguageConst.searchFRAC.tr,
                         iconOnTap: () async {
-                          await Get.find<WishListController>()
-                              .setWishData("0000");
                           // Get.dialog(ExitDialog());
                         },
                       ),

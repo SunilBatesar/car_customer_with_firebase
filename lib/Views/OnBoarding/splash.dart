@@ -22,17 +22,28 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   data() async {
+    //  CAR CONTROLLER
     final carController = Get.find<CarController>();
-    final wishListController = Get.find<WishListController>();
+    // CALL GET CARS FUNCTION
     await carController.getCar();
+    //  WISH LIST CONTROLLER
+    final wishListController = Get.find<WishListController>();
+    //  GET USER ID IN SHARED PREFS
     final userId = prefs.getSharedPrefs(prefs.userKey);
+    // USER CONTRILLER
     final userController = Get.find<UserController>();
     Future.delayed(Duration(milliseconds: 100), () async {
       if (userId.isNotEmpty) {
+        // GET USER DATA TO FIREBASE
         await userController.getDataUser(userId);
-        wishListController.getWishData(userId);
+        // GET WISH LIST DATA TO FIREBASE
+        await wishListController.getWishData(userId);
+        // CALL FILTER WISH LIST CARS FUNCTION
+        wishListController.filterCar();
+        // BOTTOMBAR SCREEN
         Get.toNamed(RoutesName.bottombarScreen);
       } else {
+        // LOGIN SCREEN
         Get.toNamed(RoutesName.loginScreen);
       }
     });

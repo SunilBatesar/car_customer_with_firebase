@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/Buttons/second_primary_button.dart';
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
@@ -31,6 +32,8 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
   Widget build(BuildContext context) {
     final cardata = carController.carData.data!
         .firstWhere((e) => e.id == id, orElse: () => CarModel());
+    List<CreatePackageModel> bestpackageList = cardata.package!;
+    bestpackageList.sort((a, b) => a.ammount!.compareTo(b.ammount!));
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(15.sp).copyWith(top: 0),
@@ -82,14 +85,25 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                       Stack(
                         children: [
                           ClipRRect(
-                              clipBehavior: Clip.antiAlias,
-                              borderRadius: BorderRadius.circular(12),
-                              child: Image.asset(
-                                styleSheet.images.toyotacar,
-                                width: styleSheet.services.screenWidth(context),
-                                height: 200.h,
-                                fit: BoxFit.cover,
-                              )),
+                            clipBehavior: Clip.antiAlias,
+                            borderRadius: BorderRadius.circular(12),
+                            child: CachedNetworkImage(
+                              height: 200.h,
+                              width: styleSheet.services.screenWidth(context),
+                              fit: BoxFit.cover,
+                              imageUrl: cardata.image!.first,
+                              placeholder: (context, url) => Center(
+                                child: SizedBox(
+                                    height: 50.sp,
+                                    width: 50.sp,
+                                    child: CircularProgressIndicator(
+                                      color: styleSheet.colors.black,
+                                    )),
+                              ),
+                              errorWidget: (context, url, error) =>
+                                  Center(child: Icon(Icons.error)),
+                            ),
+                          ),
                           Positioned(
                               top: 10,
                               left: 10,
@@ -186,10 +200,10 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                   child: RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: "₹ ${cardata.price} ",
+                        text: "₹ ${bestpackageList.first.ammount} ",
                         style: styleSheet.textTheme.fs20Medium),
                     TextSpan(
-                        text: LanguageConst.day.tr,
+                        text: bestpackageList.first.packagetype,
                         style: styleSheet.textTheme.fs20Normal)
                   ])),
                 ),
@@ -220,7 +234,8 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(ImageVideoListScreen());
+                                Get.to(ImageVideoListScreen(),
+                                    arguments: {"id": id});
                               },
                               child: Stack(
                                 alignment: Alignment.center,
@@ -248,18 +263,31 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                                       ),
                                     ),
                                   ),
-                                  Container(
-                                    height: 100,
-                                    width: 100,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      // color: Colors.black,
-                                      image: DecorationImage(
-                                        image: AssetImage(styleSheet.images
-                                            .toyotacar), // Replace with your image URL
-                                        fit: BoxFit.cover,
+                                  CachedNetworkImage(
+                                    imageUrl: cardata.image!.last,
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      height: 100,
+                                      width: 100,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        image: DecorationImage(
+                                          image:
+                                              imageProvider, // Replace with your image URL
+                                          fit: BoxFit.cover,
+                                        ),
                                       ),
                                     ),
+                                    placeholder: (context, url) => Center(
+                                      child: SizedBox(
+                                          height: 18.sp,
+                                          width: 18.sp,
+                                          child: CircularProgressIndicator(
+                                            color: styleSheet.colors.white, 
+                                          )),
+                                    ),
+                                    errorWidget: (context, url, error) =>
+                                        Center(child: Icon(Icons.error)),
                                   ),
                                 ],
                               ),
@@ -267,7 +295,8 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                             styleSheet.services.addwidth(10.w),
                             InkWell(
                               onTap: () {
-                                Get.to(ImageVideoListScreen());
+                                Get.to(ImageVideoListScreen(),
+                                    arguments: {"id": id});
                               },
                               child: Stack(
                                 alignment: Alignment.center,

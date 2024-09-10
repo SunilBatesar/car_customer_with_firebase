@@ -9,7 +9,6 @@ import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Data/Network/firestorage.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -168,16 +167,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: PrimaryButton(
           title: LanguageConst.save.tr,
           onPressed: () async {
-            final _storageFunction = FirestorageFuction();
+            final storageFunction = FirestorageFuction();
 
             String userImageURL = userDp;
 
             if (imageFile != null && imageFile!.path.isNotEmpty) {
               if (userDp.isNotEmpty) {
                 userImageURL =
-                    await _storageFunction.updatefile(userDp, imageFile!);
+                    await storageFunction.updatefile(userDp, imageFile!);
               } else {
-                userImageURL = await _storageFunction.uploadFile(imageFile!);
+                userImageURL = await storageFunction.uploadFile(imageFile!);
               }
             }
             final data = userController.userdata.data!.copyWith(

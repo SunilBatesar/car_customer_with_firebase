@@ -39,11 +39,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 itemCount: 2,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) => BookingDetailCard(
-                  image: styleSheet.images.blue_lambo,
-                  carname: 'Mercedes Benz ',
-                  year: '( 2023 )',
-                  rate: '₹ 1,200 ',
-                  offer: '(5%off)',
+                 id: "",
                 ).paddingOnly(bottom: 10.h),
               ),
               styleSheet.services.addheight(15.h),

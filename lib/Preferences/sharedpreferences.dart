@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:car_booking_customer/Models/firebase_response_model.dart';
 import 'package:car_booking_customer/Models/language_model.dart';
-import 'package:car_booking_customer/Models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {

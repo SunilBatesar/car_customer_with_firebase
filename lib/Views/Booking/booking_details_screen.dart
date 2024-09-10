@@ -30,19 +30,11 @@ class BookingDetailsScreen extends StatelessWidget {
                 child: ListView(
                   children: [
                     BookingDetailCard(
-                      image: styleSheet.images.blue_lambo,
-                      carname: 'Mercedes Benz ',
-                      year: '( 2023 )',
-                      rate: '₹ 1,200 ',
-                      offer: '(5%off)',
+                      id: "",
                     ),
                     styleSheet.services.addheight(15.h),
                     BookingDetailCard(
-                      image: styleSheet.images.blue_lambo,
-                      carname: 'Mercedes Benz ',
-                      year: '( 2023 )',
-                      rate: '₹ 1,200 ',
-                      offer: '(5%off)',
+                      id: "",
                     ),
                     styleSheet.services.addheight(15.h),
                     AddressTile(),

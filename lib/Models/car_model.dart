@@ -8,7 +8,7 @@ class CarModel {
   DateTime? createdAt;
   DateTime? updateAt;
   bool? isAvailable;
-  int? quantity;
+  int? bookingquantity;
   double? discount;
   String? dicountCode;
   DateTime? addedAt;
@@ -21,45 +21,46 @@ class CarModel {
   String? category;
   String? manufactureyear;
   String? description;
-  double? ammount;
   String? packagetype;
   String? carcolor;
   List<String>? videos;
   List<String>? image;
+  List<CreatePackageModel>? package;
 
-  CarModel(
-      {this.addedAt,
-      this.id,
-      this.createdAt,
-      this.dicountCode,
-      this.discount,
-      this.image,
-      this.isAvailable,
-      this.price,
-      this.quantity,
-      this.title,
-      this.updateAt,
-      this.companyname,
-      this.carmodel,
-      this.platenumber,
-      this.transmission,
-      this.seatingcapacity,
-      this.fuel,
-      this.category,
-      this.manufactureyear,
-      this.description,
-      this.carcolor,
-      this.videos,
-      this.packagetype,
-      this.ammount});
-  CarModel.fromcars(FirebaseResponseModel map) : id = map.docId;
-
+  CarModel({
+    this.addedAt,
+    this.id,
+    this.createdAt,
+    this.dicountCode,
+    this.discount,
+    this.image,
+    this.isAvailable,
+    this.price,
+    this.bookingquantity = 1,
+    this.title,
+    this.updateAt,
+    this.companyname,
+    this.carmodel,
+    this.platenumber,
+    this.transmission,
+    this.seatingcapacity,
+    this.fuel,
+    this.category,
+    this.manufactureyear,
+    this.description,
+    this.carcolor,
+    this.videos,
+    this.packagetype,
+    this.package,
+  });
   //  CAR MODEL FROM JSON
   CarModel.fromjson(FirebaseResponseModel json)
       : id = json.docId,
         companyname = json.data["companyname"] ?? "",
         carmodel = json.data["carmodel"] ?? "",
         price = json.data["price"]?.toDouble(),
+        bookingquantity =
+            json.data['bookingquantity'] ?? 1, //  ONLYE USE ON BOOKING LENGTH
         platenumber = json.data["platenumber"] ?? "",
         transmission = json.data["transmission"] ?? "",
         seatingcapacity = json.data["seatingcapacity"] ?? "",
@@ -75,7 +76,10 @@ class CarModel {
             .map((e) => e.toString())
             .toList(),
         packagetype = json.data["packagetype"] ?? "",
-        ammount = json.data["ammount"]?.toDouble();
+        package = ((json.data["createpackagedata"] ?? []) as List)
+            .map((e) =>
+                CreatePackageModel.fromjson(FirebaseResponseModel(e, "")))
+            .toList();
 
   //  ORDER TO JSON
   Map<String, dynamic> toBookingsjson() {
@@ -83,7 +87,7 @@ class CarModel {
       "title": title ?? "",
       "price": price ?? 0.0,
       "isAvailable": isAvailable ?? true,
-      "quantity": quantity ?? 1,
+      "bookingquantity": bookingquantity ?? 1,
       "discount": discount ?? 0.0,
       "discountCode": dicountCode ?? "",
     };
@@ -95,7 +99,7 @@ class CarModel {
         title = json.data["title"] ?? "",
         price = json.data["price"]?.toDouble(),
         isAvailable = json.data["isAvailable"] ?? true,
-        quantity = json.data["quantity"].toInt(),
+        bookingquantity = json.data["bookingquantity"] ?? 1,
         discount = json.data["discount"].toDouble(),
         dicountCode = json.data["dicountCode"] ?? "";
 
@@ -107,7 +111,7 @@ class CarModel {
     DateTime? createdAt,
     DateTime? updateAt,
     bool? isAvailable,
-    int? quantity,
+    int? bookingquantity,
     double? discount,
     String? dicountCode,
     DateTime? addedAt,
@@ -120,7 +124,7 @@ class CarModel {
     String? category,
     String? manufactureyear,
     String? description,
-    double? ammount,
+    List<CreatePackageModel>? package,
     String? packagetype,
     String? carcolor,
     List<String>? videos,
@@ -133,7 +137,7 @@ class CarModel {
       createdAt: createdAt ?? this.createdAt,
       updateAt: updateAt ?? this.updateAt,
       isAvailable: isAvailable ?? this.isAvailable,
-      quantity: quantity ?? this.quantity,
+      bookingquantity: bookingquantity ?? this.bookingquantity,
       discount: discount ?? this.discount,
       dicountCode: dicountCode ?? this.dicountCode,
       addedAt: addedAt ?? this.addedAt,
@@ -146,11 +150,41 @@ class CarModel {
       category: category ?? this.category,
       manufactureyear: manufactureyear ?? this.manufactureyear,
       description: description ?? this.description,
-      ammount: ammount ?? this.ammount,
+      package: package ?? this.package,
       packagetype: packagetype ?? this.packagetype,
       carcolor: carcolor ?? this.carcolor,
       videos: videos ?? this.videos,
       image: image ?? this.image,
     );
+  }
+}
+
+// CREATEPACKAGE MODEL
+class CreatePackageModel {
+  String? packagetype;
+  int? ammount;
+  CreatePackageModel({
+    this.packagetype,
+    this.ammount,
+  });
+  CreatePackageModel copywith({
+    String? packagetype,
+    int? ammount,
+  }) {
+    return CreatePackageModel(
+      packagetype: packagetype ?? this.packagetype,
+      ammount: ammount ?? this.ammount,
+    );
+  }
+
+  CreatePackageModel.fromjson(FirebaseResponseModel json)
+      : packagetype = json.data["packagetype"] ?? "",
+        ammount = json.data["ammount"] ?? "";
+
+  Map<String, dynamic> tomap() {
+    return {
+      "packagetype": packagetype,
+      "ammount": ammount,
+    };
   }
 }

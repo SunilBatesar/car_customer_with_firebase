@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_booking_customer/Components/Tiles/car_part_text_icon.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
@@ -40,6 +41,8 @@ class _RentalCarTileState extends State<RentalCarTile> {
   Widget build(BuildContext context) {
     final cardata = carController.carData.data!
         .firstWhere((e) => e.id == widget.id, orElse: () => CarModel());
+    List<CreatePackageModel> bestpackageList = cardata.package!;
+    bestpackageList.sort((a, b) => a.ammount!.compareTo(b.ammount!));
 
     return GestureDetector(
       onTap: () {
@@ -49,17 +52,29 @@ class _RentalCarTileState extends State<RentalCarTile> {
         borderRadius: BorderRadius.circular(14.r),
         child: Stack(
           children: [
-            Container(
-              key: _cardKey,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    fit: BoxFit.cover,
-                    image: AssetImage(styleSheet.images.toyotacar)),
+            CachedNetworkImage(
+              imageUrl: cardata.image!.first,
+              imageBuilder: (context, imageProvider) => Container(
+                decoration: BoxDecoration(
+                  image:
+                      DecorationImage(fit: BoxFit.cover, image: imageProvider),
+                ),
               ),
+              placeholder: (context, url) => Center(
+                child: SizedBox(
+                    height: 25.sp,
+                    width: 25.sp,
+                    child: CircularProgressIndicator(
+                      color: styleSheet.colors.white,
+                    )),
+              ),
+              errorWidget: (context, url, error) =>
+                  Center(child: Icon(Icons.error)),
             ),
             Positioned(
               bottom: 0,
               child: Container(
+                key: _cardKey,
                 width: _cardHeight.width,
                 height: _cardHeight.height * 0.5,
                 decoration: BoxDecoration(
@@ -81,7 +96,7 @@ class _RentalCarTileState extends State<RentalCarTile> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "₹ ${cardata.price}",
+                      "₹ ${bestpackageList.first.ammount}",
                       style: styleSheet.textTheme.fs24Bold
                           .copyWith(color: styleSheet.colors.white),
                     ).paddingOnly(left: 19.w, bottom: 5.h),

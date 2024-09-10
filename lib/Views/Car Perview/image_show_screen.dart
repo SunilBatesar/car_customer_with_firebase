@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -40,13 +41,22 @@ class _ImageShowScreenState extends State<ImageShowScreen> {
         child: Column(
           children: [
             InteractiveViewer(
-              child: Image.asset(
-                widget.image,
-                fit: BoxFit.contain,
-                width: styleSheet.services.screenWidth(context),
-                height: styleSheet.services.screenHeight(context) * 0.7,
+                child: CachedNetworkImage(
+              fit: BoxFit.contain,
+              width: styleSheet.services.screenWidth(context),
+              height: styleSheet.services.screenHeight(context) * 0.7,
+              imageUrl: widget.image,
+              placeholder: (context, url) => Center(
+                child: SizedBox(
+                    height: 25.sp,
+                    width: 25.sp,
+                    child: CircularProgressIndicator(
+                      color: styleSheet.colors.white,
+                    )),
               ),
-            ),
+              errorWidget: (context, url, error) =>
+                  Center(child: Icon(Icons.error)),
+            )),
             Spacer(),
             SizedBox(
               height: 50.h,
@@ -75,10 +85,20 @@ class _ImageShowScreenState extends State<ImageShowScreen> {
                           borderRadius: BorderRadius.circular(10.r)),
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),
-                        child: Image.asset(
-                          widget.imageList[index],
+                        child: CachedNetworkImage(
                           width: 50.w,
                           fit: BoxFit.cover,
+                          imageUrl: widget.imageList[index],
+                          placeholder: (context, url) => Center(
+                            child: SizedBox(
+                                height: 25.sp,
+                                width: 25.sp,
+                                child: CircularProgressIndicator(
+                                  color: styleSheet.colors.white,
+                                )),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Center(child: Icon(Icons.error)),
                         ),
                       ),
                     ),

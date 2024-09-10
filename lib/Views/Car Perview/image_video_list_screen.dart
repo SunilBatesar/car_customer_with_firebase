@@ -1,4 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_booking_customer/Components/AppBar/custom_appbar.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
+import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Views/Car%20Perview/image_show_screen.dart';
 import 'package:car_booking_customer/Views/Car%20Perview/video_show_screen.dart';
@@ -10,7 +13,8 @@ import 'package:get/get.dart';
 
 class ImageVideoListScreen extends StatelessWidget {
   ImageVideoListScreen({super.key});
-
+  final id = Get.arguments["id"];
+  final carController = Get.find<CarController>();
   final List<String> images = [
     styleSheet.images.toyotacar,
     styleSheet.images.swift,
@@ -20,6 +24,9 @@ class ImageVideoListScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
+    final cardata = carController.carData.data!
+        .firstWhere((e) => e.id == id, orElse: () => CarModel());
+
     return Scaffold(
       appBar: CustomAppbar(title: Text(LanguageConst.photos.tr)),
       body: ScrollConfiguration(
@@ -31,7 +38,7 @@ class ImageVideoListScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GridView.builder(
-                  itemCount: images.length,
+                  itemCount: cardata.image!.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -44,15 +51,26 @@ class ImageVideoListScreen extends StatelessWidget {
                     return GestureDetector(
                       onTap: () {
                         Get.to(ImageShowScreen(
-                            image: images[index], imageList: images));
+                            image: cardata.image![index],
+                            imageList: cardata.image!));
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),
-                        child: Image.asset(
-                          images[index],
-                          height: 200,
-                          width: 200,
+                        child: CachedNetworkImage(
+                          height: 200.h,
+                          width: 200.w,
                           fit: BoxFit.cover,
+                          imageUrl: cardata.image![index],
+                          placeholder: (context, url) => Center(
+                            child: SizedBox(
+                                height: 25.sp,
+                                width: 25.sp,
+                                child: CircularProgressIndicator(
+                                  color: styleSheet.colors.white,
+                                )),
+                          ),
+                          errorWidget: (context, url, error) =>
+                              Center(child: Icon(Icons.error)),
                         ),
                       ),
                     );
