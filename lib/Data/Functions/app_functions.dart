@@ -2,6 +2,8 @@
 
 import 'dart:math';
 
+import 'package:car_booking_customer/Models/car_model.dart';
+
 class AppFunctions {
   //Generate random id **//
   static generateId({int length = 20}) {
@@ -22,5 +24,12 @@ class AppFunctions {
     }
     print("Id = $id");
     return id;
+  }
+
+  // LESS THEN PRICE FILTER
+ static CreatePackageModel findLessPrice(List<CreatePackageModel> model) {
+    List<CreatePackageModel> bestpackageList = model;
+    bestpackageList.sort((a, b) => a.ammount!.compareTo(b.ammount!));
+    return bestpackageList.first;
   }
 }

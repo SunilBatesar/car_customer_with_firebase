@@ -258,14 +258,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: AspectRatio(
                                       aspectRatio: 1,
                                       child: RentalCarTile(
-                                        id: carController
-                                            .carData.data![index].id!,
+                                        model:
+                                            carController.carData.data![index],
                                         onPressed: () {
-                                          Get.to(() => CarPreviewScreen(),
-                                              arguments: {
-                                                "id": carController
-                                                    .carData.data![index].id!
-                                              });
+                                          Get.to(
+                                            () => CarPreviewScreen(
+                                              model: carController
+                                                  .carData.data![index],
+                                            ),
+                                          );
                                         },
                                       )),
                                 ),

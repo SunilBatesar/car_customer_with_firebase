@@ -12,8 +12,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 class ImageVideoListScreen extends StatelessWidget {
-  ImageVideoListScreen({super.key});
-  final id = Get.arguments["id"];
+  CarModel model;
+  ImageVideoListScreen({super.key, required this.model});
   final carController = Get.find<CarController>();
   final List<String> images = [
     styleSheet.images.toyotacar,
@@ -24,9 +24,6 @@ class ImageVideoListScreen extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    final cardata = carController.carData.data!
-        .firstWhere((e) => e.id == id, orElse: () => CarModel());
-
     return Scaffold(
       appBar: CustomAppbar(title: Text(LanguageConst.photos.tr)),
       body: ScrollConfiguration(
@@ -38,7 +35,7 @@ class ImageVideoListScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 GridView.builder(
-                  itemCount: cardata.image!.length,
+                  itemCount: model.image!.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -50,9 +47,9 @@ class ImageVideoListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(ImageShowScreen(
-                            image: cardata.image![index],
-                            imageList: cardata.image!));
+                        Get.to(() => ImageShowScreen(
+                            image: model.image![index],
+                            imageList: model.image!));
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),
@@ -60,7 +57,7 @@ class ImageVideoListScreen extends StatelessWidget {
                           height: 200.h,
                           width: 200.w,
                           fit: BoxFit.cover,
-                          imageUrl: cardata.image![index],
+                          imageUrl: model.image![index],
                           placeholder: (context, url) => Center(
                             child: SizedBox(
                                 height: 25.sp,

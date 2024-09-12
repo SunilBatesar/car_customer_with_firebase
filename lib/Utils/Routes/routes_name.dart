@@ -15,7 +15,7 @@ class RoutesName {
   static const String allCarsViewScreen = "/AllCarsViewScreen";
 
   // ---- CAR PREVIEW Route Name
-  static const String carPreviewScreen = "/CarPreviewScreen";
+  // static const String carPreviewScreen = "/CarPreviewScreen";
 
   // ---- Booking Route Name
   static const String bookingScreen = "/BookingScreen";

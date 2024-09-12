@@ -1,29 +1,55 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:car_booking_customer/Components/DropdownButtons/create_package_model_dropdown_button.dart';
 import 'package:car_booking_customer/Components/Tiles/car_part_text_icon.dart';
+import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
+import 'package:car_booking_customer/Utils/Enums/enums.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookingDetailCard extends StatefulWidget {
-  String id;
-  BookingDetailCard({super.key, required this.id});
+  CarModel model;
+  BookingDetailCard({super.key, required this.model});
 
   @override
   State<BookingDetailCard> createState() => _BookingDetailCardState();
 }
 
 class _BookingDetailCardState extends State<BookingDetailCard> {
+  CreatePackageModel? packageSelect;
+  @override
+  void initState() {
+    super.initState();
+    packageSelect = widget.model.package!.first;
+  }
+
+  CreatePackageModel getAmount(PackageType type) {
+    CreatePackageModel price;
+    if (type == PackageType.DAY) {
+      price = widget.model.package!
+          .firstWhere((e) => e.packagetype == PackageType.DAY);
+    } else {
+      price = widget.model.package!
+          .firstWhere((e) => e.packagetype == PackageType.HOUR);
+    }
+    return price;
+  }
+
+  final carController = Get.find<CarController>();
   @override
   Widget build(BuildContext context) {
+    final mainCardata = carController.carData.data!
+        .firstWhere((e) => e.id == widget.model.id, orElse: () => CarModel());
     return GetBuilder<WishListController>(builder: (controller) {
       final cardata = controller.wishListCarData
-          .firstWhere((e) => e.id == widget.id, orElse: () => CarModel());
+          .firstWhere((e) => e.id == widget.model.id, orElse: () => CarModel());
       return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
@@ -44,83 +70,111 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
               ),
               styleSheet.services.addwidth(5),
               Expanded(
-                child: Container(
-                  height: 95.h,
-                  padding:
-                      EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
-                  decoration: BoxDecoration(
-                    color: styleSheet.colors.white,
-                    borderRadius: BorderRadius.circular(10.r),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
+                child: InkWell(
+                  onTap: () {
+                    Get.dialog(Dialog(
+                      child: PrimaryContainer(
+                          child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Flexible(
-                            flex: 1,
-                            child: Text(
-                              cardata.carmodel ?? "",
-                              style: styleSheet.textTheme.fs20Normal,
-                              overflow: TextOverflow.ellipsis,
+                          CreatePackageModelDropdownButton(
+                            title: "Select Booking Type",
+                            items: mainCardata.package!,
+                            onvalue: packageSelect,
+                            onChangedvalue: (v) {
+                              setState(() {
+                                packageSelect = v;
+
+                                controller.selectNewPackage(
+                                    widget.model.id!, v);
+                              });
+                            },
+                          )
+                        ],
+                      )),
+                    ));
+                  },
+                  child: Container(
+                    height: 95.h,
+                    padding:
+                        EdgeInsets.only(left: 10, top: 5, bottom: 5, right: 10),
+                    decoration: BoxDecoration(
+                      color: styleSheet.colors.white,
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              flex: 1,
+                              child: Text(
+                                cardata.carmodel ?? "",
+                                style: styleSheet.textTheme.fs20Normal,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              cardata.manufactureyear ?? "",
-                              style: styleSheet.textTheme.fs16Normal,
-                              overflow: TextOverflow.ellipsis,
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                cardata.manufactureyear ?? "",
+                                style: styleSheet.textTheme.fs16Normal,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ).paddingOnly(left: 5.w),
+                          ],
+                        ),
+                        styleSheet.services.addheight(5),
+                        Row(
+                          children: [
+                            CarPartTextIcon(
+                              title: cardata.fuel ?? "",
+                              iconpath: styleSheet.icons.petrol,
+                              imgcolor: styleSheet.colors.black,
+                              Colors: styleSheet.colors.black,
                             ),
-                          ).paddingOnly(left: 5.w),
-                        ],
-                      ),
-                      styleSheet.services.addheight(5),
-                      Row(
-                        children: [
-                          CarPartTextIcon(
-                            title: cardata.fuel ?? "",
-                            iconpath: styleSheet.icons.petrol,
-                            imgcolor: styleSheet.colors.black,
-                            Colors: styleSheet.colors.black,
-                          ),
-                          styleSheet.services.addwidth(10.w),
-                          CarPartTextIcon(
-                            title: cardata.transmission ?? "",
-                            iconpath: styleSheet.icons.gear,
-                            imgcolor: styleSheet.colors.black,
-                            Colors: styleSheet.colors.black,
-                          ),
-                          styleSheet.services.addwidth(10.w),
-                          CarPartTextIcon(
-                            title:
-                                "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
-                            iconpath: styleSheet.icons.seat,
-                            imgcolor: styleSheet.colors.black,
-                            Colors: styleSheet.colors.black,
-                          ),
-                        ],
-                      ),
-                      styleSheet.services.addheight(5),
-                      Row(
-                        children: [
-                          Text(
-                            "0.0",
-                            style: styleSheet.textTheme.fs18Normal,
-                          ),
-                          Text(
-                            LanguageConst.day.tr,
-                            style: styleSheet.textTheme.fs12Normal,
-                          ),
-                          Text(
-                            "0.0",
-                            style: styleSheet.textTheme.fs12Normal,
-                          ),
-                        ],
-                      )
-                    ],
+                            styleSheet.services.addwidth(10.w),
+                            CarPartTextIcon(
+                              title: cardata.transmission ?? "",
+                              iconpath: styleSheet.icons.gear,
+                              imgcolor: styleSheet.colors.black,
+                              Colors: styleSheet.colors.black,
+                            ),
+                            styleSheet.services.addwidth(10.w),
+                            CarPartTextIcon(
+                              title:
+                                  "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
+                              iconpath: styleSheet.icons.seat,
+                              imgcolor: styleSheet.colors.black,
+                              Colors: styleSheet.colors.black,
+                            ),
+                          ],
+                        ),
+                        styleSheet.services.addheight(5),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              cardata.package![0].ammount.toString(),
+                              style: styleSheet.textTheme.fs18Normal,
+                            ),
+                            styleSheet.services.addwidth(5),
+                            Text(
+                              packageSelect!.packagetype ?? "",
+                              style: styleSheet.textTheme.fs12Normal,
+                            ),
+                            styleSheet.services.addwidth(5),
+                            Text(
+                              "0.0",
+                              style: styleSheet.textTheme.fs12Normal,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -138,8 +192,12 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        controller.upDateCar(cardata.copyWith(
-                            bookingquantity: cardata.bookingquantity! + 1));
+                        // controller.upDateCar(cardata.copyWith(
+                        //     bookingquantity: cardata.bookingquantity! + 1));
+
+                        // CALL INCREASE QUANTITY
+                        controller.increaseQuantity(
+                            widget.model.id!, packageSelect!);
                       },
                       child: Container(
                         decoration: BoxDecoration(
@@ -165,8 +223,18 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                     GestureDetector(
                       onTap: () {
                         if (cardata.bookingquantity! > 1) {
-                          controller.upDateCar(cardata.copyWith(
-                              bookingquantity: cardata.bookingquantity! - 1));
+                          // controller.upDateCar(cardata.copyWith(
+                          //     bookingquantity: cardata.bookingquantity! - 1));
+
+                          // CALL DECREASEQUANTITY FUNCTION
+
+                          final firstPrice = mainCardata.package!
+                              .firstWhere((e) =>
+                                  e.packagetype ==
+                                  cardata.package!.first.packagetype)
+                              .ammount;
+                          controller.decreaseQuantity(widget.model.id!,
+                              cardata.package!.first, firstPrice!);
                         }
                       },
                       child: Container(

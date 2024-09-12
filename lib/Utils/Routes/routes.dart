@@ -23,7 +23,6 @@ import 'package:car_booking_customer/Views/Authentication/verification_screen.da
 import 'package:car_booking_customer/Views/Booking/booking_details_screen.dart';
 import 'package:car_booking_customer/Views/Booking/booking_screen.dart';
 import 'package:car_booking_customer/Views/BottomNavigationBar/bottom_navigationbar.dart';
-import 'package:car_booking_customer/Views/Car%20Perview/carperview_screen.dart';
 import 'package:car_booking_customer/Views/Home/all_cars_view_screen.dart';
 import 'package:car_booking_customer/Views/Home/all_reviews_screen.dart';
 import 'package:car_booking_customer/Views/Home/home_screen.dart';
@@ -52,8 +51,8 @@ final List<GetPage<dynamic>> appRoutes = [
       name: RoutesName.allReviewsScreen, page: () => const AllReviewsScreen()),
 
   // CAR PREVIEW GETPAGE
-  GetPage(
-      name: RoutesName.carPreviewScreen, page: () => const CarPreviewScreen()),
+  // GetPage(
+  //     name: RoutesName.carPreviewScreen, page: () => const CarPreviewScreen()),
 
   // BOOKING GETPAGE
   GetPage(name: RoutesName.bookingScreen, page: () => BookingScreen()),

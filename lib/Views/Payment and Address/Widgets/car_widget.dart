@@ -1,7 +1,6 @@
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
-import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
@@ -15,8 +14,6 @@ class CarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final carController = Get.find<CarController>();
-
     final wishlistController = Get.find<WishListController>();
     //  GET WISH LIST DATA IN CAR CONTROLLER
     List<CarModel> cardata = wishlistController.wishListCarData;
@@ -29,12 +26,11 @@ class CarWidget extends StatelessWidget {
               children: [
                 ListView.builder(
                     itemCount: cardata.length,
-                    // scrollDirection: Axis.vertical,
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       return BookingDetailCard(
-                        id: cardata[index].id!,
+                        model: cardata[index],
                       ).paddingOnly(bottom: 10.h);
                     }),
               ],

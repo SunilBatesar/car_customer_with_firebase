@@ -10,11 +10,11 @@ import 'package:get/get.dart';
 
 class RentalCarTile extends StatefulWidget {
   final Function onPressed;
-  final String id;
+  final CarModel model;
   const RentalCarTile({
     super.key,
     required this.onPressed,
-    required this.id,
+    required this.model,
   });
 
   @override
@@ -39,9 +39,7 @@ class _RentalCarTileState extends State<RentalCarTile> {
 
   @override
   Widget build(BuildContext context) {
-    final cardata = carController.carData.data!
-        .firstWhere((e) => e.id == widget.id, orElse: () => CarModel());
-    List<CreatePackageModel> bestpackageList = cardata.package!;
+    List<CreatePackageModel> bestpackageList = widget.model.package!;
     bestpackageList.sort((a, b) => a.ammount!.compareTo(b.ammount!));
 
     return GestureDetector(
@@ -53,7 +51,7 @@ class _RentalCarTileState extends State<RentalCarTile> {
         child: Stack(
           children: [
             CachedNetworkImage(
-              imageUrl: cardata.image!.first,
+              imageUrl: widget.model.image!.first,
               imageBuilder: (context, imageProvider) => Container(
                 decoration: BoxDecoration(
                   image:
@@ -107,16 +105,16 @@ class _RentalCarTileState extends State<RentalCarTile> {
                         Row(
                           children: [
                             CarPartTextIcon(
-                                title: cardata.fuel ?? "",
+                                title: widget.model.fuel ?? "",
                                 iconpath: styleSheet.icons.petrol),
                             styleSheet.services.addwidth(10.w),
                             CarPartTextIcon(
-                                title: cardata.transmission ?? "",
+                                title: widget.model.transmission ?? "",
                                 iconpath: styleSheet.icons.gear),
                             styleSheet.services.addwidth(10.w),
                             CarPartTextIcon(
                                 title:
-                                    "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
+                                    "${widget.model.seatingcapacity} ${LanguageConst.seats.tr}",
                                 iconpath: styleSheet.icons.seat),
                           ],
                         ).paddingOnly(right: 10.w, bottom: 10.h),
@@ -152,7 +150,7 @@ class _RentalCarTileState extends State<RentalCarTile> {
                         bottomRight: Radius.circular(14.r),
                         topRight: Radius.circular(14.r))),
                 child: Text(
-                  cardata.carmodel ?? "",
+                  widget.model.carmodel ?? "",
                   style: styleSheet.textTheme.fs18Normal
                       .copyWith(color: styleSheet.colors.white),
                 ),

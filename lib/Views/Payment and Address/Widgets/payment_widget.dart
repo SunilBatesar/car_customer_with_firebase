@@ -5,6 +5,7 @@ import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
+import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
@@ -39,7 +40,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                 itemCount: 2,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) => BookingDetailCard(
-                 id: "",
+                 model: CarModel(),
                 ).paddingOnly(bottom: 10.h),
               ),
               styleSheet.services.addheight(15.h),

@@ -5,6 +5,7 @@ import 'package:car_booking_customer/Components/Tiles/address_tile.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/bookingtime.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
+import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
@@ -30,11 +31,11 @@ class BookingDetailsScreen extends StatelessWidget {
                 child: ListView(
                   children: [
                     BookingDetailCard(
-                      id: "",
+                      model: CarModel(),
                     ),
                     styleSheet.services.addheight(15.h),
                     BookingDetailCard(
-                      id: "",
+                      model: CarModel(),
                     ),
                     styleSheet.services.addheight(15.h),
                     AddressTile(),

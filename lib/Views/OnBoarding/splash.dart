@@ -38,8 +38,6 @@ class _SplashScreenState extends State<SplashScreen> {
         await userController.getDataUser(userId);
         // GET WISH LIST DATA TO FIREBASE
         await wishListController.getWishData(userId);
-        // CALL FILTER WISH LIST CARS FUNCTION
-        wishListController.filterCar();
         // BOTTOMBAR SCREEN
         Get.toNamed(RoutesName.bottombarScreen);
       } else {

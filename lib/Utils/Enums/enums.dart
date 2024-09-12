@@ -7,8 +7,9 @@ enum AuthState { LOGIN, SIGNUP, LOGOUT }
 enum PaymentState { CAR, ADDRESS, PAYMENT }
 
 /// DATA STATE
-enum DataState { PENDING, COMPLETE, ERROR ,ISLOADING}
+enum DataState { PENDING, COMPLETE, ERROR, ISLOADING }
 
 /// POST DATA REQUEST TYPE
-enum PostDataREquestType{ADD}
+enum PostDataREquestType { ADD }
 
+enum PackageType { HOUR, DAY, WEEK }

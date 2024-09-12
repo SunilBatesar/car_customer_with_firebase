@@ -1,4 +1,5 @@
 import 'package:car_booking_customer/Models/firebase_response_model.dart';
+import 'package:car_booking_customer/Utils/Enums/enums.dart';
 
 //  CAR MODEL
 class CarModel {
@@ -163,28 +164,34 @@ class CarModel {
 class CreatePackageModel {
   String? packagetype;
   int? ammount;
+  PackageType? type;
   CreatePackageModel({
     this.packagetype,
     this.ammount,
+    this.type,
   });
   CreatePackageModel copywith({
     String? packagetype,
     int? ammount,
+    PackageType? type,
   }) {
     return CreatePackageModel(
       packagetype: packagetype ?? this.packagetype,
       ammount: ammount ?? this.ammount,
+      type: type ?? this.type,
     );
   }
 
   CreatePackageModel.fromjson(FirebaseResponseModel json)
       : packagetype = json.data["packagetype"] ?? "",
-        ammount = json.data["ammount"] ?? "";
+        ammount = json.data["ammount"] ?? "",
+        type = json.data["type"] ?? PackageType.HOUR;
 
   Map<String, dynamic> tomap() {
     return {
-      "packagetype": packagetype,
-      "ammount": ammount,
+      "packagetype": packagetype ?? "",
+      "ammount": ammount ?? 0,
+      "type": type ?? PackageType.HOUR,
     };
   }
 }

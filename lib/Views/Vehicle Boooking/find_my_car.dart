@@ -2,8 +2,9 @@ import 'package:car_booking_customer/Components/AppBar/custom_appbar.dart';
 import 'package:car_booking_customer/Components/Dialogs/filter_dialog.dart';
 import 'package:car_booking_customer/Components/TextFields/secondary_text_form_field.dart';
 import 'package:car_booking_customer/Components/Tiles/find_car_tile.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
-import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
+import 'package:car_booking_customer/Views/Car%20Perview/carperview_screen.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,6 +12,7 @@ import 'package:get/get.dart';
 
 class FindcarsScreen extends StatelessWidget {
   FindcarsScreen({super.key});
+  final carController = Get.find<CarController>();
 
   final searchController = TextEditingController();
   @override
@@ -36,7 +38,7 @@ class FindcarsScreen extends StatelessWidget {
               child: ScrollConfiguration(
                 behavior: ScrollBehavior().copyWith(overscroll: false),
                 child: GridView.builder(
-                  itemCount: 10,
+                  itemCount: carController.carData.data!.length,
                   shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -45,7 +47,8 @@ class FindcarsScreen extends StatelessWidget {
                       mainAxisSpacing: 10.h),
                   itemBuilder: (context, index) => FindCarTile(
                     onPressed: () {
-                      Get.toNamed(RoutesName.carPreviewScreen);
+                      Get.to(() => CarPreviewScreen(
+                          model: carController.carData.data![index]));
                     },
                   ),
                 ),

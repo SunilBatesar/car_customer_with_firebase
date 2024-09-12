@@ -6,9 +6,9 @@ import 'package:car_booking_customer/Components/Tiles/rentalcar_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
+import 'package:car_booking_customer/Data/Functions/app_functions.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
-import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Views/Car%20Perview/image_video_list_screen.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
@@ -18,38 +18,36 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class CarPreviewScreen extends StatefulWidget {
-  const CarPreviewScreen({super.key});
+  CarModel model;
+  CarPreviewScreen({super.key, required this.model});
 
   @override
   State<CarPreviewScreen> createState() => _CarPreviewScreenState();
 }
 
 class _CarPreviewScreenState extends State<CarPreviewScreen> {
-  final id = Get.arguments["id"];
   int currentindex = 0;
   final carController = Get.find<CarController>();
   @override
   Widget build(BuildContext context) {
-    final cardata = carController.carData.data!
-        .firstWhere((e) => e.id == id, orElse: () => CarModel());
-    List<CreatePackageModel> bestpackageList = cardata.package!;
-    bestpackageList.sort((a, b) => a.ammount!.compareTo(b.ammount!));
+    CreatePackageModel bestpackageList =
+        AppFunctions.findLessPrice(widget.model.package!);
     return Scaffold(
       bottomNavigationBar: Padding(
         padding: EdgeInsets.all(15.sp).copyWith(top: 0),
         child: Row(
           children: [
             GetBuilder<WishListController>(builder: (wishListController) {
-              final wishListvalue =
-                  wishListController.wishListData.any((e) => e == id);
+              final wishListvalue = wishListController.wishListData
+                  .any((e) => e == widget.model.id);
 
               return SecondPrimaryButton(
                 title: LanguageConst.wishList.tr,
                 onPressed: () async {
                   if (wishListvalue) {
-                    await wishListController.remove(id);
+                    await wishListController.remove(widget.model.id!);
                   } else {
-                    await wishListController.setWishData(id);
+                    await wishListController.setWishData(widget.model.id!);
                   }
                 },
                 iconColor: wishListvalue
@@ -91,7 +89,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                               height: 200.h,
                               width: styleSheet.services.screenWidth(context),
                               fit: BoxFit.cover,
-                              imageUrl: cardata.image!.first,
+                              imageUrl: widget.model.image!.first,
                               placeholder: (context, url) => Center(
                                 child: SizedBox(
                                     height: 50.sp,
@@ -144,11 +142,11 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                       RichText(
                           text: TextSpan(children: [
                         TextSpan(
-                            text: cardata.carmodel,
+                            text: widget.model.carmodel,
                             style: styleSheet.textTheme.fs24Normal
                                 .copyWith(color: styleSheet.colors.black)),
                         TextSpan(
-                            text: " ( ${cardata.manufactureyear} )",
+                            text: " ( ${widget.model.manufactureyear} )",
                             style: styleSheet.textTheme.fs16Normal
                                 .copyWith(color: styleSheet.colors.black))
                       ])),
@@ -200,10 +198,10 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                   child: RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                        text: "₹ ${bestpackageList.first.ammount} ",
+                        text: "₹ ${bestpackageList.ammount} ",
                         style: styleSheet.textTheme.fs20Medium),
                     TextSpan(
-                        text: bestpackageList.first.packagetype,
+                        text: bestpackageList.packagetype,
                         style: styleSheet.textTheme.fs20Normal)
                   ])),
                 ),
@@ -221,7 +219,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                       ),
                       styleSheet.services.addheight(15.h),
                       Text(
-                        cardata.description ?? "",
+                        widget.model.description ?? "",
                         style: styleSheet.textTheme.fs14Normal
                             .copyWith(color: styleSheet.colors.gray),
                       ),
@@ -234,8 +232,11 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                           children: [
                             InkWell(
                               onTap: () {
-                                Get.to(ImageVideoListScreen(),
-                                    arguments: {"id": id});
+                                Get.to(
+                                  () => ImageVideoListScreen(
+                                    model: widget.model,
+                                  ),
+                                );
                               },
                               child: Stack(
                                 alignment: Alignment.center,
@@ -264,7 +265,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                                     ),
                                   ),
                                   CachedNetworkImage(
-                                    imageUrl: cardata.image!.last,
+                                    imageUrl: widget.model.image!.last,
                                     imageBuilder: (context, imageProvider) =>
                                         Container(
                                       height: 100,
@@ -283,7 +284,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                                           height: 18.sp,
                                           width: 18.sp,
                                           child: CircularProgressIndicator(
-                                            color: styleSheet.colors.white, 
+                                            color: styleSheet.colors.white,
                                           )),
                                     ),
                                     errorWidget: (context, url, error) =>
@@ -295,8 +296,11 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                             styleSheet.services.addwidth(10.w),
                             InkWell(
                               onTap: () {
-                                Get.to(ImageVideoListScreen(),
-                                    arguments: {"id": id});
+                                Get.to(
+                                  () => ImageVideoListScreen(
+                                    model: widget.model,
+                                  ),
+                                );
                               },
                               child: Stack(
                                 alignment: Alignment.center,
@@ -362,32 +366,32 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.carMake.tr,
-                              suffixtext: cardata.companyname ?? "",
+                              suffixtext: widget.model.companyname ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.transmission.tr,
-                              suffixtext: cardata.transmission ?? "",
+                              suffixtext: widget.model.transmission ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.color.tr,
-                              suffixtext: cardata.carcolor ?? "",
+                              suffixtext: widget.model.carcolor ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.licensePlateNo.tr,
-                              suffixtext: cardata.platenumber ?? "",
+                              suffixtext: widget.model.platenumber ?? "",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                             styleSheet.services.addheight(15.h),
                             RowPrefixtextSuffixtext(
                               prefixtext: LanguageConst.seatingCapacity.tr,
                               suffixtext:
-                                  "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
+                                  "${widget.model.seatingcapacity} ${LanguageConst.seats.tr}",
                               suffixTextStyle: styleSheet.textTheme.fs16Normal,
                             ),
                           ],
@@ -405,7 +409,7 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                         aspectRatio: 1.6,
                         child: ListView.builder(
                           clipBehavior: Clip.none,
-                          itemCount: 5,
+                          itemCount: carController.carData.data!.length,
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (context, index) => Padding(
@@ -413,9 +417,11 @@ class _CarPreviewScreenState extends State<CarPreviewScreen> {
                             child: AspectRatio(
                                 aspectRatio: 1,
                                 child: RentalCarTile(
-                                  id: id,
+                                  model: widget.model,
                                   onPressed: () {
-                                    Get.toNamed(RoutesName.carPreviewScreen);
+                                    Get.to(() => CarPreviewScreen(
+                                        model: carController
+                                            .carData.data![index]));
                                   },
                                 )),
                           ),

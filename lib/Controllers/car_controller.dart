@@ -30,4 +30,9 @@ class CarController extends GetxController {
       update();
     }
   }
+
+
+  getTargetCar(String id){
+    
+  }
 }
