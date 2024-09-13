@@ -65,7 +65,7 @@ class UserController extends GetxController {
         UserModel data = uData.copyWith(id: id, owner: false, customer: true);
         // POST USER DATA IN FIREBASE DOC
         await _service.post(styleSheet.apis.userDocument(id), data.tomap());
-        // SET USER DATA SharedPreferences
+        // SET USER ID SharedPreferences
         await prefs.setSharedPrefs(prefs.userKey, id);
         // SET DATA
         _userdata = DataResponse.complete(data);
@@ -96,7 +96,7 @@ class UserController extends GetxController {
           await _service.authenticate(
               state: AuthState.LOGIN,
               json: {"email": data.email, "password": password});
-          // SET USER DATA SharedPreferences
+          // SET USER ID SharedPreferences
           await prefs.setSharedPrefs(prefs.userKey, snapshot.first.docId);
           // SET DATA
           _userdata = DataResponse.complete(data);

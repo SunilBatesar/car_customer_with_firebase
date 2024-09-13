@@ -14,65 +14,81 @@ class CarWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final wishlistController = Get.find<WishListController>();
-    //  GET WISH LIST DATA IN CAR CONTROLLER
-    List<CarModel> cardata = wishlistController.wishListCarData;
-    return Column(
-      children: [
-        Expanded(
-          child: ScrollConfiguration(
-            behavior: ScrollBehavior().copyWith(scrollbars: false),
-            child: ListView(
-              children: [
-                ListView.builder(
-                    itemCount: cardata.length,
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return BookingDetailCard(
-                        model: cardata[index],
-                      ).paddingOnly(bottom: 10.h);
-                    }),
-              ],
-            ),
-          ),
-        ),
-        PrimaryContainer(
-            child: Column(
-          children: [
-            const RowPrefixtextSuffixtext(
-                prefixtext: "Lamborghini Aventador Z Class ( 2023 )",
-                suffixtext: "₹ 1,200"),
-            styleSheet.services.addheight(11.h),
-            const RowPrefixtextSuffixtext(
-                prefixtext: "Mercedes Benz ( 2023 )", suffixtext: "₹ 1,200"),
-            styleSheet.services.addheight(11.h),
-            Divider(
-              color: styleSheet.colors.gray,
-            ),
-            styleSheet.services.addheight(11.h),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                mainAxisSize: MainAxisSize.max,
+    return GetBuilder<WishListController>(builder: (controller) {
+      //  GET WISH LIST DATA IN CAR CONTROLLER
+      List<CarModel> cardata = controller.wishListCarData;
+      final totalprice = totalPrice(cardata);
+      return Column(
+        children: [
+          Expanded(
+            child: ScrollConfiguration(
+              behavior: ScrollBehavior().copyWith(scrollbars: false),
+              child: ListView(
                 children: [
-                  Text(
-                    LanguageConst.totalAmount.tr,
-                    style: styleSheet.textTheme.fs16Normal
-                        .copyWith(color: styleSheet.colors.gray),
-                  ),
-                  styleSheet.services.addheight(3.h),
-                  Text(
-                    "₹ 2,400",
-                    style: styleSheet.textTheme.fs16Bold,
-                  ),
+                  ListView.builder(
+                      itemCount: cardata.length,
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return BookingDetailCard(
+                          model: cardata[index],
+                        ).paddingOnly(bottom: 10.h);
+                      }),
                 ],
               ),
             ),
-          ],
-        )),
-      ],
-    );
+          ),
+          PrimaryContainer(
+              child: Column(
+            children: [
+              ListView.builder(
+                  itemCount: cardata.length,
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return RowPrefixtextSuffixtext(
+                        prefixtext:
+                            "${cardata[index].carmodel!}  (${cardata[index].manufactureyear!})",
+                        suffixtext:
+                            "₹ ${cardata[index].package!.first.ammount!}");
+                  }),
+              styleSheet.services.addheight(11.h),
+              Divider(
+                color: styleSheet.colors.gray,
+              ),
+              styleSheet.services.addheight(11.h),
+              Align(
+                alignment: Alignment.centerRight,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.max,
+                  children: [
+                    Text(
+                      LanguageConst.totalAmount.tr,
+                      style: styleSheet.textTheme.fs16Normal
+                          .copyWith(color: styleSheet.colors.gray),
+                    ),
+                    styleSheet.services.addheight(3.h),
+                    Text(
+                      "₹ $totalprice",
+                      style: styleSheet.textTheme.fs16Bold,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          )),
+        ],
+      );
+    });
+  }
+
+  int totalPrice(List<CarModel> model) {
+    int price = 0;
+    for (var value in model) {
+      final d = value.package!.map((e) => e.ammount).reduce((v, e) => v! + e!);
+      price = d!;
+    }
+    return price;
   }
 }

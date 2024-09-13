@@ -1,4 +1,4 @@
-import 'package:car_booking_customer/Models/car_model.dart';
+import 'package:car_booking_customer/Utils/Enums/enums.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,9 +6,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CreatePackageModelDropdownButton extends StatelessWidget {
   final String title;
   final String? hint;
-  final CreatePackageModel? onvalue;
-  final List<CreatePackageModel> items;
-  final Function(CreatePackageModel) onChangedvalue;
+  final PackageType onvalue;
+  final List<PackageType?> items;
+  final Function(PackageType) onChangedvalue;
   const CreatePackageModelDropdownButton({
     super.key,
     required this.title,
@@ -45,12 +45,12 @@ class CreatePackageModelDropdownButton extends StatelessWidget {
                 items: items
                     .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.packagetype ?? "",
+                        child: Text(e.toString(),
                             style: styleSheet.textTheme.fs16Normal)))
                     .toList(),
                 value: onvalue,
                 onChanged: (v) {
-                  onChangedvalue(v as CreatePackageModel);
+                  onChangedvalue(v!);
                 }),
           ),
         ),

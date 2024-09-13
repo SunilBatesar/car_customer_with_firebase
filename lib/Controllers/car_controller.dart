@@ -31,8 +31,6 @@ class CarController extends GetxController {
     }
   }
 
-
-  getTargetCar(String id){
-    
-  }
+  CarModel getTargetCar(String id) =>
+      _carData.data!.firstWhere((e) => e.id == id, orElse: () => CarModel());
 }

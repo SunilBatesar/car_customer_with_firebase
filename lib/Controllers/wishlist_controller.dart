@@ -6,6 +6,7 @@ import 'package:car_booking_customer/Data/Functions/app_functions.dart';
 import 'package:car_booking_customer/Data/Network/networkapi_service.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Models/firebase_response_model.dart';
+import 'package:car_booking_customer/Utils/Enums/enums.dart';
 import 'package:car_booking_customer/Utils/utils.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,7 +25,6 @@ class WishListController extends GetxController {
 
   //  increase
   increaseQuantity(String id, CreatePackageModel model) {
-    print("========");
     final index = _wishListCarData.indexWhere((e) => e.id == id);
     final a = _wishListCarData[index];
     final quantity = a.bookingquantity! + 1;
@@ -37,8 +37,6 @@ class WishListController extends GetxController {
 
   // decrease
   decreaseQuantity(String id, CreatePackageModel model, int firstammount) {
-    print("----$firstammount--");
-    print("--Model--${model.ammount}--");
     final index = _wishListCarData.indexWhere((e) => e.id == id);
     final a = _wishListCarData[index];
     final quantity = a.bookingquantity! - 1;
@@ -50,11 +48,27 @@ class WishListController extends GetxController {
   }
 
   // SELECT NEW PACKAGE TYPE AND SET BOOKINGQUANTITY(1) AND AMMOUNT OLD PRICE
-  selectNewPackage(String id, CreatePackageModel model) {
+  selectNewPackage(String id, PackageType type) {
     final index = _wishListCarData.indexWhere((e) => e.id == id);
-    _wishListCarData[index] =
-        _wishListCarData[index].copyWith(bookingquantity: 1, package: [model]);
+    final packagedata = getAmount(type, id);
+    _wishListCarData[index] = _wishListCarData[index]
+        .copyWith(bookingquantity: 1, package: [packagedata!]);
     update();
+  }
+
+  // GET PACKAGE
+  CreatePackageModel? getAmount(PackageType type, String carID) {
+    final carController = Get.find<CarController>(); // CARCONTROLLER
+    final car = carController.getTargetCar(carID);
+    CreatePackageModel? price;
+    if (type == PackageType.DAY) {
+      price = car.package!.firstWhere((e) => e.type == PackageType.DAY);
+    } else if (type == PackageType.WEEK) {
+      price = car.package!.firstWhere((e) => e.type == PackageType.WEEK);
+    } else if (type == PackageType.HOUR) {
+      price = car.package!.firstWhere((e) => e.type == PackageType.HOUR);
+    }
+    return price;
   }
 
   // FILTER FUNCTION WISH LIST ID TO CAR DATA
