@@ -6,8 +6,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 
 class AddressTile extends StatelessWidget {
+  String address;
+  String destination;
   final Function? onPressedEdit;
-  const AddressTile({super.key, this.onPressedEdit});
+  AddressTile(
+      {super.key,
+      required this.address,
+      required this.destination,
+      this.onPressedEdit});
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +46,12 @@ class AddressTile extends StatelessWidget {
             ],
           ),
           styleSheet.services.addheight(10.h),
-          Text("Rishi nagar 90 - S 99 gali 1",
-              style: styleSheet.textTheme.fs16Normal),
+          Text(address, style: styleSheet.textTheme.fs16Normal),
           styleSheet.services.addheight(15.h),
           Text(LanguageConst.destination.tr,
               style: styleSheet.textTheme.fs14Normal),
           styleSheet.services.addheight(10.h),
-          Text("Hansi Gate Sec - 89", style: styleSheet.textTheme.fs16Normal),
+          Text(destination, style: styleSheet.textTheme.fs16Normal),
         ],
       ),
     );

@@ -38,7 +38,10 @@ class BookingDetailsScreen extends StatelessWidget {
                       model: CarModel(),
                     ),
                     styleSheet.services.addheight(15.h),
-                    AddressTile(),
+                    AddressTile(
+                      address: "Rishi nagar 90 - S 99 gali 1",
+                      destination: "Hansi Gate Sec - 89",
+                    ),
                     styleSheet.services.addheight(15.h),
                     BookingTimeCard(),
                   ],

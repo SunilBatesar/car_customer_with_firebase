@@ -1,7 +1,7 @@
 import 'package:car_booking_customer/Components/AppBar/custom_appbar.dart';
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
-import 'package:car_booking_customer/Components/Dialogs/payment_dialog.dart';
 import 'package:car_booking_customer/Components/Tiles/status_tile.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/payment_address_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/Utils/Enums/enums.dart';
@@ -24,6 +24,7 @@ class _WishListScreenState extends State<WishListScreen> {
   double height = 60;
 
   final controller = Get.find<PaymentAddressController>();
+  final bookingController = Get.find<BookingController>();
 
   @override
   Widget build(BuildContext context) {
@@ -84,15 +85,14 @@ class _WishListScreenState extends State<WishListScreen> {
             Expanded(
               child: PrimaryButton(
                 title: LanguageConst.continueText.tr,
-                onPressed: () {
+                onPressed: () async {
                   if (controller.paymentStateValue == PaymentState.CAR) {
                     controller.setpaymentStateValue(PaymentState.ADDRESS);
                   } else if (controller.paymentStateValue ==
                       PaymentState.ADDRESS) {
                     controller.setpaymentStateValue(PaymentState.PAYMENT);
                   } else {
-                    Future.delayed(Duration(seconds: 3), () => Get.back());
-                    Get.dialog(PaymentDialog());
+                    await bookingController.setBooking();
                   }
                   setState(() {});
                 },

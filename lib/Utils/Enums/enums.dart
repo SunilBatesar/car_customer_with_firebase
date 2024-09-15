@@ -12,4 +12,8 @@ enum DataState { PENDING, COMPLETE, ERROR, ISLOADING }
 /// POST DATA REQUEST TYPE
 enum PostDataREquestType { ADD }
 
+/// PACKAGE TYPE (CAR PRICE TYPES)
 enum PackageType { HOUR, DAY, WEEK }
+
+/// BOOKING STATE
+enum BookingState { REQUEST, PENDING, REJECTED, COMPLETE }

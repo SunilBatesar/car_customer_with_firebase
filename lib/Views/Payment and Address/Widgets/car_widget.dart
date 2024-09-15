@@ -82,13 +82,14 @@ class CarWidget extends StatelessWidget {
       );
     });
   }
+}
 
-  int totalPrice(List<CarModel> model) {
-    int price = 0;
-    for (var value in model) {
-      final d = value.package!.map((e) => e.ammount).reduce((v, e) => v! + e!);
-      price = d!;
-    }
-    return price;
+// TOTAL PRICE SLECTS CAR
+int totalPrice(List<CarModel> model) {
+  int price = 0;
+  for (var value in model) {
+    final d = value.package!.map((e) => e.ammount).reduce((v, e) => v! + e!);
+    price = d!;
   }
+  return price;
 }

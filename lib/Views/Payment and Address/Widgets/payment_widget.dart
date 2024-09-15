@@ -4,14 +4,16 @@ import 'package:car_booking_customer/Components/Tiles/payment_mode_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
+import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
-import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class PaymentWidget extends StatefulWidget {
   const PaymentWidget({super.key});
@@ -21,12 +23,11 @@ class PaymentWidget extends StatefulWidget {
 }
 
 class _PaymentWidgetState extends State<PaymentWidget> {
-  bool cashvalue = true;
-  bool onlinevalue = false;
   int? offerindex;
-  String time = "";
-  String date = "";
+
   bool containerShow = false;
+  final wishListController = Get.find<WishListController>();
+  final bookingController = Get.find<BookingController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -37,25 +38,28 @@ class _PaymentWidgetState extends State<PaymentWidget> {
             child: ListView(children: [
               ListView.builder(
                 shrinkWrap: true,
-                itemCount: 2,
+                itemCount: wishListController.wishListCarData.length,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) => BookingDetailCard(
-                 model: CarModel(),
+                  model: wishListController.wishListCarData[index],
                 ).paddingOnly(bottom: 10.h),
               ),
               styleSheet.services.addheight(15.h),
               AddressTile(
+                address: bookingController.addresscontroller.text,
+                destination: bookingController.destinationcontroller.text,
                 onPressedEdit: () {},
               ),
               styleSheet.services.addheight(15.h),
-              time.isEmpty && date.isEmpty
+              bookingController.bookingtime == null &&
+                      bookingController.bookingdate == null
                   ? GestureDetector(
                       onTap: () async {
                         await Get.dialog(DateTimeDialog()).then((val) {
                           if (val != null) {
                             setState(() {
-                              time = val["time"];
-                              date = val["date"];
+                              bookingController.bookingtime = val["time"];
+                              bookingController.bookingdate = val["date"];
                             });
                           }
                         });
@@ -74,14 +78,15 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                     )
                   : SizedBox(),
               styleSheet.services.addheight(15.h),
-              time.isNotEmpty && date.isNotEmpty
+              bookingController.bookingtime != null &&
+                      bookingController.bookingdate != null
                   ? GestureDetector(
                       onTap: () async {
                         await Get.dialog(DateTimeDialog()).then((val) {
                           if (val != null) {
                             setState(() {
-                              time = val["time"];
-                              date = val["date"];
+                              bookingController.bookingtime = val["time"];
+                              bookingController.bookingdate = val["date"];
                             });
                           }
                         });
@@ -108,7 +113,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                     ),
                                     styleSheet.services.addheight(5.h),
                                     Text(
-                                      time,
+                                      DateFormat("hh:mm a").format(
+                                          bookingController.bookingtime!),
                                       style: styleSheet.textTheme.fs16Normal,
                                     ),
                                   ],
@@ -126,7 +132,8 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                                     ),
                                     styleSheet.services.addheight(5.h),
                                     Text(
-                                      date,
+                                      DateFormat("dd/MM/yyyy").format(
+                                          bookingController.bookingdate!),
                                       style: styleSheet.textTheme.fs16Normal,
                                     ),
                                   ],
@@ -143,11 +150,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   Expanded(
                     child: PaymentModeTile(
                       title: LanguageConst.cash.tr,
-                      boolvalue: cashvalue,
+                      boolvalue: bookingController.packagetype == "Cash",
                       onChanged: (v) {
                         setState(() {
-                          onlinevalue = false;
-                          cashvalue = v;
+                          bookingController.packagetype = "Cash";
                         });
                       },
                     ),
@@ -156,11 +162,10 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                   Expanded(
                     child: PaymentModeTile(
                       title: LanguageConst.online.tr,
-                      boolvalue: onlinevalue,
+                      boolvalue: bookingController.packagetype == "Online",
                       onChanged: (v) {
                         setState(() {
-                          cashvalue = false;
-                          onlinevalue = v;
+                          bookingController.packagetype = "Online";
                         });
                       },
                     ),

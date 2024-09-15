@@ -80,7 +80,7 @@ class ImageVideoListScreen extends StatelessWidget {
                 ),
                 styleSheet.services.addheight(15),
                 GridView.builder(
-                  itemCount: 2,
+                  itemCount: model.videos!.length,
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -92,7 +92,8 @@ class ImageVideoListScreen extends StatelessWidget {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        Get.to(VideoShowScreen());
+                        Get.to(() =>
+                            VideoShowScreen(videoPath: model.videos![index]));
                       },
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.r),

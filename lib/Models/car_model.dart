@@ -82,11 +82,12 @@ class CarModel {
                 CreatePackageModel.fromjson(FirebaseResponseModel(e, "")))
             .toList();
 
-  //  ORDER TO JSON
-  Map<String, dynamic> toBookingsjson() {
+  //  BOOKING TO JSON
+  Map<String, dynamic> toCarBookings() {
     return {
+      "car_id": id ?? "",
       "title": title ?? "",
-      "price": price ?? 0.0,
+      "package": package!.map((e) => e.tomap()),
       "isAvailable": isAvailable ?? true,
       "bookingquantity": bookingquantity ?? 1,
       "discount": discount ?? 0.0,
@@ -94,11 +95,14 @@ class CarModel {
     };
   }
 
-  //  ORDER FROM
+  //  BOOKING FROM
   CarModel.fromCarBookings(FirebaseResponseModel json)
-      : id = json.docId,
+      : id = json.data["car_id"] ?? "",
         title = json.data["title"] ?? "",
-        price = json.data["price"]?.toDouble(),
+        package = ((json.data["package"] ?? []) as List)
+            .map((e) =>
+                CreatePackageModel.fromjson(FirebaseResponseModel(e ?? {}, "")))
+            .toList(),
         isAvailable = json.data["isAvailable"] ?? true,
         bookingquantity = json.data["bookingquantity"] ?? 1,
         discount = json.data["discount"].toDouble(),
@@ -191,7 +195,7 @@ class CreatePackageModel {
     return {
       "packagetype": packagetype ?? "",
       "ammount": ammount ?? 0,
-      "type": type ?? PackageType.HOUR,
+      // "type": type ?? PackageType.HOUR,
     };
   }
 }

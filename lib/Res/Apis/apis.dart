@@ -5,20 +5,22 @@ class Apis {
   final _firestore = FirebaseFirestore.instance;
 
   // ALL COLLECTION REFERENCE
-  // USER REFERENCE
   CollectionReference<Map<String, dynamic>> get userReference =>
-      _firestore.collection("customer");
+      _firestore.collection("customer"); // CUSTOMER REFERENCE
   CollectionReference<Map<String, dynamic>> get carReference =>
-      _firestore.collection("Vehicle");
+      _firestore.collection("Vehicle"); // VEHICLE(CAR) REFERENCE
   CollectionReference<Map<String, dynamic>> get wishListReference =>
-      _firestore.collection("wishList");
+      _firestore.collection("wishList"); // WISHLIST REFERENCE
+  CollectionReference<Map<String, dynamic>> get bookingReference =>
+      _firestore.collection("bookings"); // BOOKING REFERENCE
 
   // ALL DOCUMENT REFERENCE
-  // USER DOC REFERENCE
   DocumentReference<Map<String, dynamic>> userDocument(String id) =>
-      userReference.doc(id);
+      userReference.doc(id); // CUSTOMER DOCUMENT
   DocumentReference<Map<String, dynamic>> carDocument(String id) =>
-      carReference.doc(id);
+      carReference.doc(id); // VEHICLE(CAR) DOCUMENT
   DocumentReference<Map<String, dynamic>> wishListDocument(String id) =>
-      wishListReference.doc(id);
+      wishListReference.doc(id); // WISHLIST DOCUMENT
+  DocumentReference<Map<String, dynamic>> bookingDocument(String id) =>
+      bookingReference.doc(id); // BOOKING DOCUMENT
 }

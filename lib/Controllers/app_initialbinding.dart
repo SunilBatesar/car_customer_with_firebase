@@ -1,4 +1,5 @@
 import 'package:car_booking_customer/Classes/manage_data.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/language_controller.dart';
 import 'package:car_booking_customer/Controllers/payment_address_controller.dart';
@@ -15,5 +16,6 @@ class AppInitialbinding extends Bindings {
     Get.put(LanguageController());
     Get.put(CarController());
     Get.put(WishListController());
+    Get.put(BookingController());
   }
 }

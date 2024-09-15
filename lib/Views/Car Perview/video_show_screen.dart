@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class VideoShowScreen extends StatefulWidget {
-  const VideoShowScreen({super.key});
+  String videoPath;
+  VideoShowScreen({super.key, required this.videoPath});
 
   @override
   State<VideoShowScreen> createState() => _VideoShowScreenState();

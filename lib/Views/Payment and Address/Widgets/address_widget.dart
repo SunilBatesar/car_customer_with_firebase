@@ -1,6 +1,9 @@
 import 'package:car_booking_customer/Components/TextFields/secondary_text_form_field.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
+import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
+import 'package:car_booking_customer/Views/Payment%20and%20Address/Widgets/car_widget.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,10 +17,9 @@ class AddressWidget extends StatefulWidget {
 }
 
 class _AddressWidgetState extends State<AddressWidget> {
-  final addresscontroller = TextEditingController();
-  final destinationcontroller = TextEditingController();
   bool containerShow = false;
-
+  final wishlistController = Get.find<WishListController>();
+  final bookingController = Get.find<BookingController>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -30,7 +32,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                 SecondaryTextFormField(
                   title: LanguageConst.addressDefault.tr,
                   hinttext: LanguageConst.address.tr,
-                  controller: addresscontroller,
+                  controller: bookingController.addresscontroller,
                   icon: styleSheet.icons.location2,
                   iconOnTap: () {},
                 ),
@@ -38,7 +40,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                 SecondaryTextFormField(
                   title: LanguageConst.destination.tr,
                   hinttext: LanguageConst.choseyourDestination.tr,
-                  controller: destinationcontroller,
+                  controller: bookingController.destinationcontroller,
                   icon: styleSheet.icons.location2,
                   iconOnTap: () {},
                 ),
@@ -90,13 +92,18 @@ class _AddressWidgetState extends State<AddressWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const RowPrefixtextSuffixtext(
-                          prefixtext: "Lamborghini Aventador Z Class ( 2023 )",
-                          suffixtext: "₹ 1,200"),
-                      styleSheet.services.addheight(11.h),
-                      const RowPrefixtextSuffixtext(
-                          prefixtext: "Mercedes Benz ( 2023 )",
-                          suffixtext: "₹ 1,200"),
+                      ListView.builder(
+                          itemCount: wishlistController.wishListCarData.length,
+                          physics: NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            final cardata = wishlistController.wishListCarData;
+                            return RowPrefixtextSuffixtext(
+                                prefixtext:
+                                    "${cardata[index].carmodel!}  (${cardata[index].manufactureyear!})",
+                                suffixtext:
+                                    "₹ ${cardata[index].package!.first.ammount!}");
+                          }),
                     ],
                   ),
                 ),
@@ -118,7 +125,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     ),
                     styleSheet.services.addheight(3.h),
                     Text(
-                      "₹ 2,400",
+                      "₹ ${totalPrice(wishlistController.wishListCarData)}",
                       style: styleSheet.textTheme.fs16Bold,
                     ),
                   ],

@@ -19,8 +19,8 @@ class DateTimeDialog extends StatefulWidget {
 }
 
 class _DateTimeDialogState extends State<DateTimeDialog> {
-  String time = DateFormat("hh:mm a").format(DateTime.now());
-  String date = DateFormat("dd/MM/yyyy").format(DateTime.now());
+  DateTime time = DateTime.now();
+  DateTime date = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +68,7 @@ class _DateTimeDialogState extends State<DateTimeDialog> {
                 );
               },
               onChange: (dateTime) {
-                time = DateFormat("hh:mm a").format(dateTime);
+                time = dateTime;
               },
             ),
             styleSheet.services.addheight(15.h),
@@ -118,7 +118,7 @@ class _DateTimeDialogState extends State<DateTimeDialog> {
                 );
               },
               onChange: (dateTime) {
-                date = DateFormat("dd/MM/yyyy").format(dateTime);
+                date = dateTime;
               },
             ),
             styleSheet.services.addheight(25.h),
