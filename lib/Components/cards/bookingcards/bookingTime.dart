@@ -7,7 +7,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class BookingTimeCard extends StatelessWidget {
-  const BookingTimeCard({super.key});
+  String time;
+  String date;
+  BookingTimeCard({super.key, required this.time, required this.date});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +40,7 @@ class BookingTimeCard extends StatelessWidget {
                   ),
                   styleSheet.services.addheight(5.h),
                   Text(
-                    "10:00am",
+                    time,
                     style: styleSheet.textTheme.fs16Normal,
                   ),
                 ],
@@ -55,7 +57,7 @@ class BookingTimeCard extends StatelessWidget {
                   ),
                   styleSheet.services.addheight(5.h),
                   Text(
-                    "12/06/24",
+                    date,
                     style: styleSheet.textTheme.fs16Normal,
                   ),
                 ],

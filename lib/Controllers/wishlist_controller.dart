@@ -23,15 +23,18 @@ class WishListController extends GetxController {
   final List<CarModel> _wishListCarData = [];
   List<CarModel> get wishListCarData => _wishListCarData;
 
+  // FIND CAR (ID SE)
+  CarModel findCar(String id) => _wishListCarData.firstWhere((e) => e.id == id);
+
   //  increase
   increaseQuantity(String id, CreatePackageModel model) {
-    final index = _wishListCarData.indexWhere((e) => e.id == id);
-    final a = _wishListCarData[index];
-    final quantity = a.bookingquantity! + 1;
-    final totalPrice = (model.ammount ?? 0) * quantity;
-    _wishListCarData[index] = a.copyWith(
+    final index = _wishListCarData.indexWhere((e) => e.id == id); // INDEX
+    final db = _wishListCarData[index]; // SAVE DATA (db)
+    final quantity = db.bookingquantity! + 1; // SET QUANTITY
+    final carsPrice = (model.ammount ?? 0) * quantity; // CAR TOTAL PRICE
+    _wishListCarData[index] = db.copyWith(
         bookingquantity: quantity,
-        package: [model.copywith(ammount: totalPrice)]);
+        package: [model.copywith(ammount: carsPrice)]); //CAR DATA UPDATE
     update();
   }
 
@@ -175,6 +178,7 @@ class WishListController extends GetxController {
         final data = ((response.data["idList"] ?? []) as List)
             .map((e) => e.toString())
             .toList(); // RESPONSE SET TO DATA
+        _wishListCarData.clear(); // WISHLISTDATA CLEAR
         _wishListData = data; // SET WISHLISTDATA
         filterCar(); // CALL FILTERCAR FUNCTION
       }
@@ -183,5 +187,15 @@ class WishListController extends GetxController {
     } finally {
       update();
     }
+  }
+
+  // TOTAL PRICE SLECTS CAR
+  int totalPrice(List<CarModel> model) {
+    int price = 0;
+    for (var value in model) {
+      final d = value.package!.map((e) => e.ammount).reduce((v, e) => v! + e!);
+      price = d!;
+    }
+    return price;
   }
 }

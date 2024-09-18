@@ -3,7 +3,6 @@ import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
 import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
-import 'package:car_booking_customer/Views/Payment%20and%20Address/Widgets/car_widget.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -125,7 +124,7 @@ class _AddressWidgetState extends State<AddressWidget> {
                     ),
                     styleSheet.services.addheight(3.h),
                     Text(
-                      "₹ ${totalPrice(wishlistController.wishListCarData)}",
+                      "₹ ${bookingController.totalprice}",
                       style: styleSheet.textTheme.fs16Bold,
                     ),
                   ],

@@ -87,11 +87,18 @@ class CarModel {
     return {
       "car_id": id ?? "",
       "title": title ?? "",
+      "carmodel": carmodel ?? "",
+      "transmission": transmission ?? "",
+      "seatingcapacity": seatingcapacity ?? "",
+      "fuel": fuel ?? "",
+      "companyname": companyname ?? "",
+      "manufactureyear": manufactureyear ?? "",
       "package": package!.map((e) => e.tomap()),
       "isAvailable": isAvailable ?? true,
       "bookingquantity": bookingquantity ?? 1,
       "discount": discount ?? 0.0,
       "discountCode": dicountCode ?? "",
+      "image": image!.map((e) => e.toString()),
     };
   }
 
@@ -99,6 +106,12 @@ class CarModel {
   CarModel.fromCarBookings(FirebaseResponseModel json)
       : id = json.data["car_id"] ?? "",
         title = json.data["title"] ?? "",
+        companyname = json.data["companyname"] ?? "",
+        carmodel = json.data["carmodel"] ?? "",
+        transmission = json.data["transmission"] ?? "",
+        seatingcapacity = json.data["seatingcapacity"] ?? "",
+        fuel = json.data["fuel"] ?? "",
+        manufactureyear = json.data["manufactureyear"] ?? "",
         package = ((json.data["package"] ?? []) as List)
             .map((e) =>
                 CreatePackageModel.fromjson(FirebaseResponseModel(e ?? {}, "")))
@@ -106,7 +119,10 @@ class CarModel {
         isAvailable = json.data["isAvailable"] ?? true,
         bookingquantity = json.data["bookingquantity"] ?? 1,
         discount = json.data["discount"].toDouble(),
-        dicountCode = json.data["dicountCode"] ?? "";
+        dicountCode = json.data["dicountCode"] ?? "",
+        image = ((json.data["image"] ?? []) as List)
+            .map((e) => e.toString())
+            .toList();
 
   //  COPY WITH
   CarModel copyWith({
@@ -189,13 +205,16 @@ class CreatePackageModel {
   CreatePackageModel.fromjson(FirebaseResponseModel json)
       : packagetype = json.data["packagetype"] ?? "",
         ammount = json.data["ammount"] ?? "",
-        type = json.data["type"] ?? PackageType.HOUR;
+        type = PackageType.values.firstWhere(
+          (e) => e.name == json.data["type"],
+          orElse: () => PackageType.HOUR,
+        );
 
   Map<String, dynamic> tomap() {
     return {
       "packagetype": packagetype ?? "",
       "ammount": ammount ?? 0,
-      // "type": type ?? PackageType.HOUR,
+      "type": type!.name,
     };
   }
 }

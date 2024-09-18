@@ -2,8 +2,8 @@ import 'package:car_booking_customer/Classes/manage_data.dart';
 import 'package:car_booking_customer/Components/Dialogs/filter_dialog.dart';
 import 'package:car_booking_customer/Components/TextFields/primary_text_form_field.dart';
 import 'package:car_booking_customer/Components/Tiles/bookingcar_tile.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
-import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -13,6 +13,8 @@ class BookingScreen extends StatelessWidget {
   BookingScreen({super.key});
 
   final seachController = TextEditingController();
+
+  final bookingController = Get.find<BookingController>(); // BOOKING CONTROLLER
   @override
   Widget build(BuildContext context) {
     final manageData = ConstantSheet.instance;
@@ -61,7 +63,7 @@ class BookingScreen extends StatelessWidget {
                   child: GridView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
-                    itemCount: 6,
+                    itemCount: bookingController.bookingData.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisSpacing: 10,
                         crossAxisSpacing: 10,
@@ -69,9 +71,7 @@ class BookingScreen extends StatelessWidget {
                         crossAxisCount: 1),
                     itemBuilder: (context, index) {
                       return BookingsCarTile(
-                        onTap: () {
-                          Get.toNamed(RoutesName.bookingDetailsScreen);
-                        },
+                        model: bookingController.bookingData[index],
                       );
                     },
                   ),

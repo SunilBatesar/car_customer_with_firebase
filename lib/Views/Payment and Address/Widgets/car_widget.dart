@@ -1,6 +1,7 @@
 import 'package:car_booking_customer/Components/Tiles/primary_container.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
@@ -10,14 +11,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 class CarWidget extends StatelessWidget {
-  const CarWidget({super.key});
-
+  CarWidget({super.key});
+  final bookingController = Get.find<BookingController>();
   @override
   Widget build(BuildContext context) {
     return GetBuilder<WishListController>(builder: (controller) {
       //  GET WISH LIST DATA IN CAR CONTROLLER
       List<CarModel> cardata = controller.wishListCarData;
-      final totalprice = totalPrice(cardata);
+      bookingController.totalprice = controller.totalPrice(
+          cardata); // BOOKING ADD ALL CARS PRICE AND STORE BOOKING CONTROLLER TOTALPRICE
       return Column(
         children: [
           Expanded(
@@ -31,7 +33,7 @@ class CarWidget extends StatelessWidget {
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
                         return BookingDetailCard(
-                          model: cardata[index],
+                          model: controller.findCar(cardata[index].id!),
                         ).paddingOnly(bottom: 10.h);
                       }),
                 ],
@@ -70,7 +72,7 @@ class CarWidget extends StatelessWidget {
                     ),
                     styleSheet.services.addheight(3.h),
                     Text(
-                      "₹ $totalprice",
+                      "₹ ${bookingController.totalprice}",
                       style: styleSheet.textTheme.fs16Bold,
                     ),
                   ],
@@ -82,14 +84,4 @@ class CarWidget extends StatelessWidget {
       );
     });
   }
-}
-
-// TOTAL PRICE SLECTS CAR
-int totalPrice(List<CarModel> model) {
-  int price = 0;
-  for (var value in model) {
-    final d = value.package!.map((e) => e.ammount).reduce((v, e) => v! + e!);
-    price = d!;
-  }
-  return price;
 }

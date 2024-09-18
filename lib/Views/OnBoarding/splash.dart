@@ -1,3 +1,4 @@
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
@@ -22,27 +23,24 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   data() async {
-    //  CAR CONTROLLER
-    final carController = Get.find<CarController>();
-    // CALL GET CARS FUNCTION
-    await carController.getCar();
-    //  WISH LIST CONTROLLER
-    final wishListController = Get.find<WishListController>();
-    //  GET USER ID IN SHARED PREFS
-    final userId = prefs.getSharedPrefs(prefs.userKey);
-    // USER CONTRILLER
-    final userController = Get.find<UserController>();
+    final carController = Get.find<CarController>(); //  CAR CONTROLLER
+    await carController.getCar(); // CALL GET CARS FUNCTION
+    final wishListController =
+        Get.find<WishListController>(); // WISH LIST CONTROLLER
+    final bookingController =
+        Get.find<BookingController>(); // BOOKING CONTROLLER
+    final userId =
+        prefs.getSharedPrefs(prefs.userKey); // GET USER ID IN SHARED PREFS
+    final userController = Get.find<UserController>(); // USER CONTRILLER
     Future.delayed(Duration(milliseconds: 100), () async {
       if (userId.isNotEmpty) {
-        // GET USER DATA TO FIREBASE
-        await userController.getDataUser(userId);
-        // GET WISH LIST DATA TO FIREBASE
-        await wishListController.getWishData(userId);
-        // BOTTOMBAR SCREEN
-        Get.toNamed(RoutesName.bottombarScreen);
+        await userController.getDataUser(userId); // GET USER DATA TO FIREBASE
+        await wishListController
+            .getWishData(userId); // GET WISH LIST DATA TO FIREBASE
+        await bookingController.getBooking(); // GET BOOKINGS FIREBASE
+        Get.toNamed(RoutesName.bottombarScreen); // BOTTOMBAR SCREEN
       } else {
-        // LOGIN SCREEN
-        Get.toNamed(RoutesName.loginScreen);
+        Get.toNamed(RoutesName.loginScreen); // LOGIN SCREEN
       }
     });
   }

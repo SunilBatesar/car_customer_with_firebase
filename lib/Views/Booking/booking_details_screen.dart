@@ -5,15 +5,17 @@ import 'package:car_booking_customer/Components/Tiles/address_tile.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/book_detail_card.dart';
 import 'package:car_booking_customer/Components/cards/bookingcards/bookingtime.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixtext.dart';
-import 'package:car_booking_customer/Models/car_model.dart';
+import 'package:car_booking_customer/Models/booking_model.dart';
 import 'package:car_booking_customer/Res/i18n/language_translations.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BookingDetailsScreen extends StatelessWidget {
-  const BookingDetailsScreen({super.key});
+  BookingDetailsScreen({super.key});
+  final bookingData = Get.arguments["model"] as BookingModel;
 
   @override
   Widget build(BuildContext context) {
@@ -30,20 +32,28 @@ class BookingDetailsScreen extends StatelessWidget {
                 behavior: ScrollBehavior().copyWith(overscroll: false),
                 child: ListView(
                   children: [
-                    BookingDetailCard(
-                      model: CarModel(),
-                    ),
-                    styleSheet.services.addheight(15.h),
-                    BookingDetailCard(
-                      model: CarModel(),
-                    ),
+                    ListView.builder(
+                        itemCount: bookingData.cars!.length,
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return BookingDetailCard(
+                            model: bookingData.cars![index],
+                            increaseDecreaseButton: false,
+                          ).paddingOnly(bottom: 10.h);
+                        }),
                     styleSheet.services.addheight(15.h),
                     AddressTile(
-                      address: "Rishi nagar 90 - S 99 gali 1",
-                      destination: "Hansi Gate Sec - 89",
+                      address: bookingData.address ?? "",
+                      destination: bookingData.destination ?? "",
                     ),
                     styleSheet.services.addheight(15.h),
-                    BookingTimeCard(),
+                    BookingTimeCard(
+                      date: DateFormat("dd/MM/yyyy")
+                          .format(DateTime.parse(bookingData.date!)),
+                      time: DateFormat("hh:mm a")
+                          .format(DateTime.parse(bookingData.time!)),
+                    ),
                   ],
                 ),
               ),
@@ -54,15 +64,15 @@ class BookingDetailsScreen extends StatelessWidget {
                 children: [
                   RowPrefixtextSuffixtext(
                       prefixtext: LanguageConst.amount.tr,
-                      suffixtext: "₹ 1,200"),
+                      suffixtext: "₹ ${bookingData.amount}"),
                   styleSheet.services.addheight(11.h),
                   RowPrefixtextSuffixtext(
                       prefixtext: LanguageConst.modeOfPayment.tr,
-                      suffixtext: "cash"),
+                      suffixtext: "${bookingData.paymentType}"),
                   styleSheet.services.addheight(11.h),
                   RowPrefixtextSuffixtext(
                       prefixtext: LanguageConst.couponCodeApplied.tr,
-                      suffixtext: "- ₹ 200"),
+                      suffixtext: "- ₹ 0"),
                   styleSheet.services.addheight(11.h),
                   Divider(
                     color: styleSheet.colors.gray,
@@ -81,7 +91,7 @@ class BookingDetailsScreen extends StatelessWidget {
                         ),
                         styleSheet.services.addheight(3.h),
                         Text(
-                          "₹ 1000",
+                          "₹ ${bookingData.amount}",
                           style: styleSheet.textTheme.fs16Bold,
                         ),
                       ],

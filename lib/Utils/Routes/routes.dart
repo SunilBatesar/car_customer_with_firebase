@@ -58,7 +58,7 @@ final List<GetPage<dynamic>> appRoutes = [
   GetPage(name: RoutesName.bookingScreen, page: () => BookingScreen()),
   GetPage(
       name: RoutesName.bookingDetailsScreen,
-      page: () => const BookingDetailsScreen()),
+      page: () =>  BookingDetailsScreen()),
 
   // Payment and Address GETPAGE
   GetPage(name: RoutesName.wishListScreen, page: () => WishListScreen()),

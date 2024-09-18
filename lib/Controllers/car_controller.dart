@@ -24,7 +24,7 @@ class CarController extends GetxController {
             response.map((e) => CarModel.fromjson(e)).toList());
       }
     } catch (e) {
-      print("=======${e.toString()}-------");
+      print("GET CARS Function ::${e.toString()}-------");
       _carData = DataResponse.error(e.toString());
     } finally {
       update();

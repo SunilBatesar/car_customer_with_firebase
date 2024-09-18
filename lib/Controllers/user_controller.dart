@@ -1,5 +1,8 @@
 // ignore_for_file: avoid_print
 
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
+import 'package:car_booking_customer/Controllers/car_controller.dart';
+import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
 import 'package:car_booking_customer/Data/Network/networkapi_service.dart';
 import 'package:car_booking_customer/Models/firebase_response_model.dart';
 import 'package:car_booking_customer/Models/user_model.dart';
@@ -80,28 +83,33 @@ class UserController extends GetxController {
 
   // LOGIN FUNCTION
   Future<void> login(Map<String, dynamic> json) async {
+    final carController = Get.find<CarController>(); //  CAR CONTROLLER
+    final wishListController =
+        Get.find<WishListController>(); // WISH LIST CONTROLLER
+    final bookingController =
+        Get.find<BookingController>(); // BOOKING CONTROLLER
     String email = json["email"];
     String password = json["password"];
-    // USER STATE SET ISLOADING
-    _userdata = DataResponse.isloading();
+    _userdata = DataResponse.isloading(); // USER STATE SET ISLOADING
     try {
-      // FIND USER DATA
       final snapshot = await _service.get(
               styleSheet.apis.userReference.where("email", isEqualTo: email))
-          as List<FirebaseResponseModel>;
+          as List<FirebaseResponseModel>; // FIND USER DATA
       if (snapshot.first.docId.isNotEmpty) {
-        // USER DATA CONVERT TO USER MODEL
-        UserModel data = UserModel.fromjson(snapshot.first);
+        UserModel data = UserModel.fromjson(
+            snapshot.first); // USER DATA CONVERT TO USER MODEL
         if (data.customer == true) {
           await _service.authenticate(
               state: AuthState.LOGIN,
               json: {"email": data.email, "password": password});
-          // SET USER ID SharedPreferences
-          await prefs.setSharedPrefs(prefs.userKey, snapshot.first.docId);
-          // SET DATA
-          _userdata = DataResponse.complete(data);
-          // NEXT SCREEN
-          Get.offNamed(RoutesName.bottombarScreen);
+          await prefs.setSharedPrefs(prefs.userKey,
+              snapshot.first.docId); // SET USER ID SharedPreferences
+          _userdata = DataResponse.complete(data); // SET DATA
+          await carController.getCar(); // CALL GET CARS FUNCTION
+          await wishListController.getWishData(
+              snapshot.first.docId); // GET WISH LIST DATA TO FIREBASE
+          await bookingController.getBooking(); // GET BOOKINGS
+          Get.offNamed(RoutesName.bottombarScreen); // NEXT SCREEN
         }
       }
     } catch (e) {

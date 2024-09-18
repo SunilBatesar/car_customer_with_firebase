@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:car_booking_customer/Components/Buttons/primary_button.dart';
 import 'package:car_booking_customer/Components/TextFields/secondary_text_form_field.dart';
 import 'package:car_booking_customer/Components/Tiles/bookingcar_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/rentalcar_tile.dart';
 import 'package:car_booking_customer/Components/Tiles/review_tile.dart';
 import 'package:car_booking_customer/Components/row_prefixtext_suffixbutton.dart';
+import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Data/Localdata/localdata.dart';
@@ -13,6 +15,7 @@ import 'package:car_booking_customer/Utils/Routes/routes_name.dart';
 import 'package:car_booking_customer/Views/BottomNavigationBar/bottom_navigationbar.dart';
 import 'package:car_booking_customer/Views/Car%20Perview/carperview_screen.dart';
 import 'package:car_booking_customer/main.dart';
+import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,14 +31,16 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentindex = 0;
+  // TEXT EDITING CONTROLLER
   final searchController = TextEditingController();
-  final carController = Get.find<CarController>();
-  final userController = Get.find<UserController>();
+  final CarouselSliderController carouselController  =CarouselSliderController();
+
+  // GETX CONTROLLERS
+  final userController = Get.find<UserController>(); //USER CONTROLLER
+  final carController = Get.find<CarController>(); // CAR CONTROLLER
+  final bookingController = Get.find<BookingController>(); // BOOKING CONTROLLER
   @override
   Widget build(BuildContext context) {
-    // print("-----Home");
-    // print(carController.carData.data!.map((e) => e.discount));
-    // print("-----Home");
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         statusBarColor: styleSheet.colors.primary, // Status bar color
@@ -62,16 +67,21 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 60,
                               decoration:
                                   const BoxDecoration(shape: BoxShape.circle),
-                              child: userController
-                                      .userdata.data!.image!.isNotEmpty
-                                  ? Image.network(
-                                      userController.userdata.data!.image!,
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.asset(
-                                      styleSheet.images.Bg_img,
-                                      fit: BoxFit.cover,
-                                    )),
+                              child: CachedNetworkImage(
+                                imageUrl: userController.userdata.data!.image!,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Center(
+                                  child: SizedBox(
+                                      height: 12.sp,
+                                      width: 12.sp,
+                                      child: CircularProgressIndicator(
+                                        color: styleSheet.colors.white,
+                                        strokeWidth: 3,
+                                      )),
+                                ),
+                                errorWidget: (context, url, error) =>
+                                    Center(child: Icon(Icons.error)),
+                              )),
                           styleSheet.services.addwidth(14.w),
                           Expanded(
                             child: Column(
@@ -126,7 +136,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
                     children: [
                       /** OFFERS BANNERS STARTS HERE */
-                      CarouselSlider(
+                      CarouselSlider(carouselController: carouselController,
                           options: CarouselOptions(
                             enlargeCenterPage: false,
                             aspectRatio: 1.9,
@@ -276,37 +286,42 @@ class _HomeScreenState extends State<HomeScreen> {
                       styleSheet.services.addheight(15.h),
                       /** MY BOOKINGS STARTS HERE */
 
-                      RowPrefixtextSuffixbutton(
-                          prefixtext: LanguageConst.myB.tr,
-                          suffixText: LanguageConst.seeA.tr,
-                          onTap: () {
-                            Get.offAll(() => BottomBarScreen(
-                                  currentIndex: 1,
-                                ));
-                          }),
-                      styleSheet.services.addheight(15.h),
-                      AspectRatio(
-                        aspectRatio: 1.7,
-                        child: ListView.builder(
-                          clipBehavior: Clip.none,
-                          itemCount: 5,
-                          shrinkWrap: true,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) => Padding(
-                            padding: EdgeInsets.only(right: 15.w),
-                            child: SizedBox(
-                                width:
-                                    styleSheet.services.screenWidth(context) *
-                                        0.8,
-                                child: BookingsCarTile(
-                                  onTap: () {
-                                    Get.toNamed(
-                                        RoutesName.bookingDetailsScreen);
-                                  },
-                                )),
-                          ),
-                        ),
-                      ),
+                      bookingController.bookingData.isNotEmpty
+                          ? Column(
+                              children: [
+                                RowPrefixtextSuffixbutton(
+                                    prefixtext: LanguageConst.myB.tr,
+                                    suffixText: LanguageConst.seeA.tr,
+                                    onTap: () {
+                                      Get.offAll(() => BottomBarScreen(
+                                            currentIndex: 1,
+                                          ));
+                                    }),
+                                styleSheet.services.addheight(15.h),
+                                AspectRatio(
+                                  aspectRatio: 1.7,
+                                  child: ListView.builder(
+                                    clipBehavior: Clip.none,
+                                    itemCount:
+                                        bookingController.bookingData.length,
+                                    shrinkWrap: true,
+                                    scrollDirection: Axis.horizontal,
+                                    itemBuilder: (context, index) => Padding(
+                                      padding: EdgeInsets.only(right: 15.w),
+                                      child: SizedBox(
+                                          width: styleSheet.services
+                                                  .screenWidth(context) *
+                                              0.8,
+                                          child: BookingsCarTile(
+                                            model: bookingController
+                                                .bookingData[index],
+                                          )),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                          : SizedBox(),
                       styleSheet.services.addheight(15.h),
                       Container(
                         width: styleSheet.services.screenWidth(context),

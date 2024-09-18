@@ -1,3 +1,4 @@
+import 'package:car_booking_customer/Extensions/extensions.dart';
 import 'package:car_booking_customer/Utils/Enums/enums.dart';
 import 'package:car_booking_customer/main.dart';
 import 'package:flutter/material.dart';
@@ -45,7 +46,7 @@ class CreatePackageModelDropdownButton extends StatelessWidget {
                 items: items
                     .map((e) => DropdownMenuItem(
                         value: e,
-                        child: Text(e.toString(),
+                        child: Text(e!.name.toString().toCapitalized,
                             style: styleSheet.textTheme.fs16Normal)))
                     .toList(),
                 value: onvalue,

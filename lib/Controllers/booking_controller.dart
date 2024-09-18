@@ -3,6 +3,7 @@
 import 'package:car_booking_customer/Components/Dialogs/payment_dialog.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
 import 'package:car_booking_customer/Controllers/wishlist_controller.dart';
+import 'package:car_booking_customer/Data/Functions/app_functions.dart';
 import 'package:car_booking_customer/Data/Network/networkapi_service.dart';
 import 'package:car_booking_customer/Models/booking_model.dart';
 import 'package:car_booking_customer/Models/firebase_response_model.dart';
@@ -27,25 +28,29 @@ class BookingController extends GetxController {
   // BOOKING PAY TYPES (USE PAYMENT WIDGET)
   String packagetype = "Cash"; // BOOKING PAY VALUE (CASH)
 
+  // TOTAL BOOKING PRICE
+  int totalprice = 0;
+
   List<BookingModel> _bookingData = []; // BOOKING ALL DATA
   List<BookingModel> get bookingData => _bookingData; // BOOKING DATA GET
 
   //  SET BOOKING DATA IN FIREBASE
   Future<void> setBooking() async {
-    print("Start Function :: Set Booking");
     final wishListController =
         Get.find<WishListController>(); // WISHLIST CONTROLLER
     final userController = Get.find<UserController>(); // USER CONTROLLER
+    final bookingid = AppFunctions.generateId(length: 6);
     final booking = BookingModel(
-      address: addresscontroller.text,
-      destination: destinationcontroller.text,
-      // bookingState: BookingState.REQUEST,
-      paymentType: packagetype,
-      time: bookingtime.toString(),
-      date: bookingdate.toString(),
-      user: userController.userdata.data,
-      cars: wishListController.wishListCarData,
-    ); // SET ALL DATA TO BOOKING MODEL AND SAVE BOOKIN NAME VARIABLE
+        bookingID: bookingid,
+        address: addresscontroller.text,
+        destination: destinationcontroller.text,
+        paymentType: packagetype,
+        time: bookingtime.toString(),
+        date: bookingdate.toString(),
+        user: userController.userdata.data,
+        cars: wishListController.wishListCarData,
+        amount:
+            totalprice); // SET ALL DATA TO BOOKING MODEL AND SAVE BOOKIN NAME VARIABLE
     try {
       // CALL POST FUNCTION (DATA POST FIREBASE)
       final response =
@@ -70,7 +75,7 @@ class BookingController extends GetxController {
   //  GET BOOKING DATA IN FIREBASE
   Future<void> getBooking() async {
     try {
-      // CALL POST FUNCTION (DATA POST FIREBASE)
+      // CALL GET FUNCTION (DATA GET FIREBASE)
       final response = await _service.get(styleSheet.apis.bookingReference)
           as List<FirebaseResponseModel>;
       if (response.isNotEmpty) {
@@ -80,9 +85,15 @@ class BookingController extends GetxController {
         _bookingData = data; // SET BOOKING DATA
       }
     } catch (e) {
-      print("SET Booking error :: ${e.toString()}");
+      print("Get Booking error :: ${e.toString()}");
     } finally {
       update();
     }
   }
+
+  // FUNCTIONS DATA FILTERS
+
+  // bookingCars() {
+  //   final cars = _bookingData.map((e) => e.cars).toList();
+  // }
 }

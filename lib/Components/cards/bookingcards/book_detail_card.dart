@@ -16,7 +16,9 @@ import 'package:get/get.dart';
 
 class BookingDetailCard extends StatefulWidget {
   CarModel model;
-  BookingDetailCard({super.key, required this.model});
+  bool increaseDecreaseButton;
+  BookingDetailCard(
+      {super.key, required this.model, this.increaseDecreaseButton = true});
 
   @override
   State<BookingDetailCard> createState() => _BookingDetailCardState();
@@ -35,9 +37,7 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
   @override
   Widget build(BuildContext context) {
     final mainCardata = carController.getTargetCar(widget.model.id!);
-    final cardata = controller.wishListCarData
-        .firstWhere((e) => e.id == widget.model.id, orElse: () => CarModel());
-    final d = cardata.package!.map((e) => e.type).toList();
+    final d = widget.model.package!.map((e) => e.type).toList();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -53,33 +53,36 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
               padding: EdgeInsets.symmetric(vertical: 15.h, horizontal: 5.w),
               child: CachedNetworkImage(
                 fit: BoxFit.cover,
-                imageUrl: cardata.image!.first,
+                imageUrl: widget.model.image!.first,
               ),
             ),
             styleSheet.services.addwidth(5),
             Expanded(
               child: InkWell(
                 onTap: () {
-                  Get.dialog(Dialog(
-                    child: PrimaryContainer(
-                        child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CreatePackageModelDropdownButton(
-                          hint: "Enter",
-                          title: "Select Booking Type",
-                          items: d,
-                          onvalue: packageSelect!,
-                          onChangedvalue: (v) {
-                            setState(() {
-                              packageSelect = v;
-                              controller.selectNewPackage(widget.model.id!, v);
-                            });
-                          },
-                        )
-                      ],
-                    )),
-                  ));
+                  widget.increaseDecreaseButton
+                      ? Get.dialog(Dialog(
+                          child: PrimaryContainer(
+                              child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CreatePackageModelDropdownButton(
+                                hint: "Enter",
+                                title: "Select Booking Type",
+                                items: d,
+                                onvalue: packageSelect!,
+                                onChangedvalue: (v) {
+                                  setState(() {
+                                    packageSelect = v;
+                                    controller.selectNewPackage(
+                                        widget.model.id!, v);
+                                  });
+                                },
+                              )
+                            ],
+                          )),
+                        ))
+                      : null;
                 },
                 child: Container(
                   height: 95.h,
@@ -99,7 +102,7 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                           Flexible(
                             flex: 1,
                             child: Text(
-                              cardata.carmodel ?? "",
+                              widget.model.carmodel ?? "",
                               style: styleSheet.textTheme.fs20Normal,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -107,7 +110,7 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              cardata.manufactureyear ?? "",
+                              widget.model.manufactureyear ?? "",
                               style: styleSheet.textTheme.fs16Normal,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -118,14 +121,14 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                       Row(
                         children: [
                           CarPartTextIcon(
-                            title: cardata.fuel ?? "",
+                            title: widget.model.fuel ?? "",
                             iconpath: styleSheet.icons.petrol,
                             imgcolor: styleSheet.colors.black,
                             Colors: styleSheet.colors.black,
                           ),
                           styleSheet.services.addwidth(10.w),
                           CarPartTextIcon(
-                            title: cardata.transmission ?? "",
+                            title: widget.model.transmission ?? "",
                             iconpath: styleSheet.icons.gear,
                             imgcolor: styleSheet.colors.black,
                             Colors: styleSheet.colors.black,
@@ -133,7 +136,7 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                           styleSheet.services.addwidth(10.w),
                           CarPartTextIcon(
                             title:
-                                "${cardata.seatingcapacity} ${LanguageConst.seats.tr}",
+                                "${widget.model.seatingcapacity} ${LanguageConst.seats.tr}",
                             iconpath: styleSheet.icons.seat,
                             imgcolor: styleSheet.colors.black,
                             Colors: styleSheet.colors.black,
@@ -145,12 +148,12 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            cardata.package![0].ammount.toString(),
+                            "₹${widget.model.package![0].ammount}",
                             style: styleSheet.textTheme.fs18Normal,
                           ),
                           styleSheet.services.addwidth(5),
                           Text(
-                            cardata.package![0].packagetype ?? "",
+                            widget.model.package![0].packagetype ?? "",
                             style: styleSheet.textTheme.fs12Normal,
                           ),
                           styleSheet.services.addwidth(5),
@@ -176,72 +179,69 @@ class _BookingDetailCardState extends State<BookingDetailCard> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      // controller.upDateCar(cardata.copyWith(
-                      //     bookingquantity: cardata.bookingquantity! + 1));
-
-                      // CALL INCREASE QUANTITY
-                      controller.increaseQuantity(
-                          widget.model.id!, mainCardata.package!.first);
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border:
-                              Border.all(color: styleSheet.colors.lightgray)),
-                      child: CircleAvatar(
-                          maxRadius: 10.r,
-                          backgroundColor: Colors.white,
-                          child: Icon(
-                            Icons.add,
-                            size: 12.sp,
-                            color: Colors.black,
-                          )),
-                    ),
-                  ),
+                  widget.increaseDecreaseButton
+                      ? GestureDetector(
+                          onTap: () {
+                            // CALL INCREASE QUANTITY
+                            controller.increaseQuantity(
+                                widget.model.id!, mainCardata.package!.first);
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border.all(
+                                    color: styleSheet.colors.lightgray)),
+                            child: CircleAvatar(
+                                maxRadius: 10.r,
+                                backgroundColor: Colors.white,
+                                child: Icon(
+                                  Icons.add,
+                                  size: 12.sp,
+                                  color: Colors.black,
+                                )),
+                          ),
+                        )
+                      : SizedBox(),
                   styleSheet.services.addheight(5.h),
                   Text(
-                    cardata.bookingquantity.toString(),
+                    widget.model.bookingquantity.toString(),
                     style: styleSheet.textTheme.fs18Medium,
                   ),
                   styleSheet.services.addheight(5.h),
-                  GestureDetector(
-                    onTap: () {
-                      if (cardata.bookingquantity! > 1) {
-                        // controller.upDateCar(cardata.copyWith(
-                        //     bookingquantity: cardata.bookingquantity! - 1));
-
-                        // CALL DECREASEQUANTITY FUNCTION
-
-                        final firstPrice = mainCardata.package!
-                            .firstWhere((e) =>
-                                e.packagetype ==
-                                cardata.package!.first.packagetype)
-                            .ammount;
-                        controller.decreaseQuantity(widget.model.id!,
-                            cardata.package!.first, firstPrice!);
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          border:
-                              Border.all(color: styleSheet.colors.lightgray)),
-                      child: CircleAvatar(
-                        maxRadius: 10.r,
-                        backgroundColor: Colors.white,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: Icon(
-                            Icons.minimize_rounded,
-                            size: 12.sp,
-                            color: Colors.black,
+                  widget.increaseDecreaseButton
+                      ? GestureDetector(
+                          onTap: () {
+                            if (widget.model.bookingquantity! > 1) {
+                              // CALL DECREASEQUANTITY FUNCTION
+                              final firstPrice = mainCardata.package!
+                                  .firstWhere((e) =>
+                                      e.packagetype ==
+                                      widget.model.package!.first.packagetype)
+                                  .ammount;
+                              controller.decreaseQuantity(widget.model.id!,
+                                  widget.model.package!.first, firstPrice!);
+                            }
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(50),
+                                border: Border.all(
+                                    color: styleSheet.colors.lightgray)),
+                            child: CircleAvatar(
+                              maxRadius: 10.r,
+                              backgroundColor: Colors.white,
+                              child: Align(
+                                alignment: Alignment.topCenter,
+                                child: Icon(
+                                  Icons.minimize_rounded,
+                                  size: 12.sp,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                  ),
+                        )
+                      : SizedBox(),
                 ],
               ),
             ),
