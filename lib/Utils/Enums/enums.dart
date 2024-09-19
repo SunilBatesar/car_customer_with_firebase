@@ -16,4 +16,4 @@ enum PostDataREquestType { ADD }
 enum PackageType { HOUR, DAY, WEEK }
 
 /// BOOKING STATE
-enum BookingState { REQUEST, PENDING, REJECTED, COMPLETE }
+enum BookingState { REQUEST, PENDING, REJECTED, COMPLETE, ACCEPT }

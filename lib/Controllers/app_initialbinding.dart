@@ -1,4 +1,5 @@
 import 'package:car_booking_customer/Classes/manage_data.dart';
+import 'package:car_booking_customer/Controllers/address_controller.dart';
 import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/google_map_controller.dart';
@@ -19,5 +20,6 @@ class AppInitialbinding extends Bindings {
     Get.put(WishListController());
     Get.put(BookingController());
     Get.put(GoogleMapGetXController());
+    Get.put(AddressController());
   }
 }

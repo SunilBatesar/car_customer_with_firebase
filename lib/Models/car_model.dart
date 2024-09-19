@@ -93,7 +93,7 @@ class CarModel {
       "fuel": fuel ?? "",
       "companyname": companyname ?? "",
       "manufactureyear": manufactureyear ?? "",
-      "package": package!.map((e) => e.tomap()),
+      "createpackagedata": package!.map((e) => e.tomap()),
       "isAvailable": isAvailable ?? true,
       "bookingquantity": bookingquantity ?? 1,
       "discount": discount ?? 0.0,
@@ -112,7 +112,7 @@ class CarModel {
         seatingcapacity = json.data["seatingcapacity"] ?? "",
         fuel = json.data["fuel"] ?? "",
         manufactureyear = json.data["manufactureyear"] ?? "",
-        package = ((json.data["package"] ?? []) as List)
+        package = ((json.data["createpackagedata"] ?? []) as List)
             .map((e) =>
                 CreatePackageModel.fromjson(FirebaseResponseModel(e ?? {}, "")))
             .toList(),

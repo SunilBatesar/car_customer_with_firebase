@@ -32,6 +32,7 @@ class AppFunctions {
     bestpackageList.sort((a, b) => a.ammount!.compareTo(b.ammount!));
     return bestpackageList.first;
   }
+
   static Future<String> userFullAddress(LatLng latlng) async {
     List<Placemark> placemark =
         await placemarkFromCoordinates(latlng.latitude, latlng.longitude);

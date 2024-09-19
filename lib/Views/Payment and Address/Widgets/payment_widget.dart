@@ -298,14 +298,20 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const RowPrefixtextSuffixtext(
-                            prefixtext:
-                                "Lamborghini Aventador Z Class ( 2023 )",
-                            suffixtext: "₹ 1,200"),
-                        styleSheet.services.addheight(11.h),
-                        const RowPrefixtextSuffixtext(
-                            prefixtext: "Mercedes Benz ( 2023 )",
-                            suffixtext: "₹ 1,200"),
+                        ListView.builder(
+                            itemCount:
+                                wishListController.wishListCarData.length,
+                            physics: NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              final cardata =
+                                  wishListController.wishListCarData;
+                              return RowPrefixtextSuffixtext(
+                                  prefixtext:
+                                      "${cardata[index].carmodel!}  (${cardata[index].manufactureyear!})",
+                                  suffixtext:
+                                      "₹ ${cardata[index].package!.first.ammount!}");
+                            }),
                       ],
                     ),
                   ),
@@ -327,7 +333,7 @@ class _PaymentWidgetState extends State<PaymentWidget> {
                       ),
                       styleSheet.services.addheight(3.h),
                       Text(
-                        "₹ 2,400",
+                        "₹ ${bookingController.totalprice}",
                         style: styleSheet.textTheme.fs16Bold,
                       ),
                     ],

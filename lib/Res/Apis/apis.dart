@@ -13,6 +13,8 @@ class Apis {
       _firestore.collection("wishList"); // WISHLIST REFERENCE
   CollectionReference<Map<String, dynamic>> get bookingReference =>
       _firestore.collection("bookings"); // BOOKING REFERENCE
+  CollectionReference<Map<String, dynamic>> get addressReference =>
+      _firestore.collection("customerAddress"); // ADDRESS REFERENCE
 
   // ALL DOCUMENT REFERENCE
   DocumentReference<Map<String, dynamic>> userDocument(String id) =>
@@ -23,4 +25,6 @@ class Apis {
       wishListReference.doc(id); // WISHLIST DOCUMENT
   DocumentReference<Map<String, dynamic>> bookingDocument(String id) =>
       bookingReference.doc(id); // BOOKING DOCUMENT
+  DocumentReference<Map<String, dynamic>> addressDocument(String id) =>
+      addressReference.doc(id); // ADDRESS DOCUMENT
 }

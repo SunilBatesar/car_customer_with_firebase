@@ -1,13 +1,15 @@
 import 'dart:async';
 
 import 'package:car_booking_customer/Data/Functions/app_functions.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
 class GoogleMapGetXController extends GetxController {
   final Location _location = Location(); //LOCATION
-
+  final addressTileController =
+      TextEditingController(); //ADDRESS TILE CONTROLLER USE(MY ADDRES SCREEN)
   static LatLng _center = LatLng(29.1492, 75.7217); //FIX LAT AND LNG
   LatLng get center => _center; //FIX LAT AND LNG
   LocationData? _locationData; // LOCATION DATA
@@ -17,9 +19,9 @@ class GoogleMapGetXController extends GetxController {
   final CameraPosition _cameraPosition =
       CameraPosition(target: _center, zoom: 14.0); // DEFAULT CAMER POSITION
   CameraPosition get cameraPosition => _cameraPosition;
+  String userLiveAddress = "";
 
-  Future<void> getUserCurrentLocation(
-      Completer<GoogleMapController> controller) async {
+  Future<void> getUserCurrentLocation() async {
     bool serviceEnabled = false;
     PermissionStatus permissionStatus;
     serviceEnabled = await _location.serviceEnabled();
@@ -30,22 +32,22 @@ class GoogleMapGetXController extends GetxController {
       permissionStatus = await _location.requestPermission();
     }
     _locationData = await _location.getLocation();
-    markersUpdate(LatLng(_locationData!.latitude!, _locationData!.longitude!),
-        controller);
+    final latlng = LatLng(_locationData!.latitude!, _locationData!.longitude!);
+    userLiveAddress = await AppFunctions.userFullAddress(latlng);
+    _center = latlng;
     update();
   }
 
-  markersUpdate(
+  Future markersUpdate(
       LatLng latlng, Completer<GoogleMapController> controller) async {
     _markers.clear();
-    final address = await AppFunctions.userFullAddress(latlng);
-    _center = latlng;
+    addressTileController.text = await AppFunctions.userFullAddress(latlng);
+    _center = LatLng(_locationData!.latitude!, _locationData!.longitude!);
     _markers.add(Marker(
       markerId: MarkerId(latlng.toString()),
       position: latlng,
       infoWindow: InfoWindow(
-        title: address,
-        snippet: '5 Star Rating',
+        title: addressTileController.text,
       ),
       icon: BitmapDescriptor.defaultMarker,
     ));

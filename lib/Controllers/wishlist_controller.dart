@@ -193,8 +193,10 @@ class WishListController extends GetxController {
   int totalPrice(List<CarModel> model) {
     int price = 0;
     for (var value in model) {
-      final d = value.package!.map((e) => e.ammount).reduce((v, e) => v! + e!);
-      price = d!;
+      final d = value.package!.map((e) => e).toList();
+      for (var package in d) {
+        price += package.ammount!;
+      }
     }
     return price;
   }

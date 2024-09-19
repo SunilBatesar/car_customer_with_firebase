@@ -1,3 +1,4 @@
+import 'package:car_booking_customer/Controllers/address_controller.dart';
 import 'package:car_booking_customer/Controllers/booking_controller.dart';
 import 'package:car_booking_customer/Controllers/car_controller.dart';
 import 'package:car_booking_customer/Controllers/user_controller.dart';
@@ -29,6 +30,8 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.find<WishListController>(); // WISH LIST CONTROLLER
     final bookingController =
         Get.find<BookingController>(); // BOOKING CONTROLLER
+    final addressController =
+        Get.find<AddressController>(); // ADDRESS CONTROLLER
     final userId =
         prefs.getSharedPrefs(prefs.userKey); // GET USER ID IN SHARED PREFS
     final userController = Get.find<UserController>(); // USER CONTRILLER
@@ -38,6 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
         await wishListController
             .getWishData(userId); // GET WISH LIST DATA TO FIREBASE
         await bookingController.getBooking(); // GET BOOKINGS FIREBASE
+        await addressController.getUserAddress(); // GET ADDRESS FIREBASE
         Get.toNamed(RoutesName.bottombarScreen); // BOTTOMBAR SCREEN
       } else {
         Get.toNamed(RoutesName.loginScreen); // LOGIN SCREEN
