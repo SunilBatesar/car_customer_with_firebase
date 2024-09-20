@@ -8,6 +8,7 @@ class AddressModel {
   String? houseNoBuildingName;
   String? contactName;
   String? contactNumber;
+  bool? defaultAddress;
   AddressModel({
     this.id,
     this.latitude,
@@ -16,6 +17,7 @@ class AddressModel {
     this.houseNoBuildingName,
     this.contactName,
     this.contactNumber,
+    this.defaultAddress,
   });
 
   AddressModel copyWith({
@@ -26,6 +28,7 @@ class AddressModel {
     String? houseNoBuildingName,
     String? contactName,
     String? contactNumber,
+    bool? defaultAddress,
   }) {
     return AddressModel(
       id: id ?? this.id,
@@ -35,6 +38,7 @@ class AddressModel {
       houseNoBuildingName: houseNoBuildingName ?? this.houseNoBuildingName,
       contactName: contactName ?? this.contactName,
       contactNumber: contactNumber ?? this.contactNumber,
+      defaultAddress: defaultAddress ?? this.defaultAddress,
     );
   }
 
@@ -47,6 +51,7 @@ class AddressModel {
       'houseNoBuildingName': houseNoBuildingName,
       'contactName': contactName,
       'contactNumber': contactNumber,
+      'defaultAddress': defaultAddress ?? false,
     };
   }
 
@@ -57,5 +62,6 @@ class AddressModel {
         addressTitle = json.data['addressTitle'] ?? "",
         houseNoBuildingName = json.data['houseNoBuildingName'] ?? "",
         contactName = json.data['contactName'] ?? "",
-        contactNumber = json.data['contactNumber'] ?? "";
+        contactNumber = json.data['contactNumber'] ?? "",
+        defaultAddress = json.data['defaultAddress'] ?? false;
 }

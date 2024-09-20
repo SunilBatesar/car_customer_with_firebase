@@ -30,6 +30,9 @@ class LanguageType {
     LanguageConst.exit: "Exit",
     // EXIT Dialog ENGLISH LANGUAGE END ----->
 
+    // EXIT Dialog ENGLISH LANGUAGE START ----->
+    LanguageConst.setting: "Setting",
+
     // Image Pick ENGLISH LANGUAGE START ----->
     LanguageConst.profilePhoto: "Profile Photo",
     LanguageConst.gallery: "Gallery",
@@ -382,8 +385,12 @@ class LanguageType {
   //  LANGUAGE HINDI
   static final Map<String, String> hindi = {
     // EXIT Dialog HINDI LANGUAGE START ----->
-    LanguageConst.areYSYWT: "Are you sure you want to",
-    LanguageConst.exit: "Exit",
+    LanguageConst.areYSYWT: "क्या आप सचमच करना चाहते हैं",
+    LanguageConst.exit: "बाहर",
+
+    // Setting HINDI LANGUAGE START ----->
+    LanguageConst.setting: "सेटिंग",
+
     // EXIT Dialog HINDI LANGUAGE END ----->
     // Image Pick HINDI LANGUAGE START ----->
     LanguageConst.profilePhoto: "खाते की फोटो",
@@ -739,6 +746,9 @@ class LanguageConst {
   // Exit Dialog LANGUAGE CONST START ----->
   static const String areYSYWT = "areYSYWT";
   static const String exit = "exit";
+
+  // SETTING LANGUAGE CONST START ----->
+  static const String setting = "Setting";
 
   // Image Pick LANGUAGE CONST START ----->
   static const String profilePhoto = "profilePhoto";

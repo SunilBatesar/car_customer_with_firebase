@@ -72,6 +72,11 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                         Divider(thickness: 1),
                         ListTile(
                           onTap: () {
+                            final googleMapGetXController = Get.find<
+                                GoogleMapGetXController>(); // GOOGLEMAPGETXCONTROLLER
+
+                            googleMapGetXController.getUserCurrentLocation();
+
                             Get.toNamed(RoutesName.addNewAddressScreen);
                           },
                           horizontalTitleGap: 0,
@@ -103,61 +108,67 @@ class _MyAddressScreenState extends State<MyAddressScreen> {
                   ...List.generate(
                     addressdata.length,
                     (index) {
-                      return PrimaryContainer(
-                          child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.all(2.r),
-                                decoration: BoxDecoration(
-                                    color: styleSheet.colors.white,
-                                    border: Border.all(
-                                        color: styleSheet.colors.gray),
-                                    shape: BoxShape.circle),
-                                child: Icon(
-                                  Icons.home,
-                                  size: 24.sp,
-                                ),
-                              ),
-                              styleSheet.services.addwidth(10.w),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(LanguageConst.addAddress.tr,
-                                      style: styleSheet.textTheme.fs16Normal
-                                          .copyWith(
-                                              color: styleSheet.colors.gray)),
-                                  styleSheet.services.addheight(10.h),
-                                  SizedBox(
-                                    width: styleSheet.services
-                                            .screenWidth(context) *
-                                        0.5,
-                                    child: Text(
-                                      "${(addressdata[index].addressTitle)}",
-                                      style: styleSheet.textTheme.fs14Normal
-                                          .copyWith(height: 1.2.h),
-                                    ),
+                      return GestureDetector(
+                        onTap: () {
+                          print("*********------*****");
+                          controller.setdefaultAddress(addressdata[index]);
+                        },
+                        child: PrimaryContainer(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  padding: EdgeInsets.all(2.r),
+                                  decoration: BoxDecoration(
+                                      color: styleSheet.colors.white,
+                                      border: Border.all(
+                                          color: styleSheet.colors.gray),
+                                      shape: BoxShape.circle),
+                                  child: Icon(
+                                    Icons.home,
+                                    size: 24.sp,
                                   ),
-                                  // styleSheet.services.addheight(10.h),
-                                  // Text("Hisar,  Haryana ",
-                                  //     style: styleSheet.textTheme.fs14Normal),
-                                ],
-                              ),
-                            ],
-                          ),
-                          IconButton(
-                              padding: EdgeInsets.all(0),
-                              onPressed: () {
-                                controller
-                                    .removeUserAddress(addressdata[index]);
-                              },
-                              icon: Icon(Icons.delete))
-                        ],
-                      )).marginOnly(bottom: 10.h);
+                                ),
+                                styleSheet.services.addwidth(10.w),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(LanguageConst.addAddress.tr,
+                                        style: styleSheet.textTheme.fs16Normal
+                                            .copyWith(
+                                                color: styleSheet.colors.gray)),
+                                    styleSheet.services.addheight(10.h),
+                                    SizedBox(
+                                      width: styleSheet.services
+                                              .screenWidth(context) *
+                                          0.5,
+                                      child: Text(
+                                        "${(addressdata[index].addressTitle)}",
+                                        style: styleSheet.textTheme.fs14Normal
+                                            .copyWith(height: 1.2.h),
+                                      ),
+                                    ),
+                                    // styleSheet.services.addheight(10.h),
+                                    // Text("Hisar,  Haryana ",
+                                    //     style: styleSheet.textTheme.fs14Normal),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            IconButton(
+                                padding: EdgeInsets.all(0),
+                                onPressed: () {
+                                  controller
+                                      .removeUserAddress(addressdata[index]);
+                                },
+                                icon: Icon(Icons.delete))
+                          ],
+                        )).marginOnly(bottom: 10.h),
+                      );
                     },
                   )
                 ],

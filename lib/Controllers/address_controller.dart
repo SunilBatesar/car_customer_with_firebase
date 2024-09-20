@@ -29,26 +29,25 @@ class AddressController extends GetxController {
   // SET USER ADDRESS IN FIREBASE
   Future<void> setUserAddress(AddressModel model) async {
     final userdata = Get.find<UserController>().userdata; // USER CONTROLLER
-
+    final db =
+        model.copyWith(defaultAddress: _addressData.isEmpty ? true : false);
     try {
       if (_addressData.isNotEmpty) {
-        print("=========");
         // UPDATE (ADD) NEW ADDRESS
         await _service
             .update(styleSheet.apis.addressDocument(userdata.data!.id!), {
-          "address List": FieldValue.arrayUnion([model.toMap()]),
+          "address List": FieldValue.arrayUnion([db.toMap()]),
         });
-        _addressData.add(model); //SET ADDRESS DATA
+        _addressData.add(db); //SET ADDRESS DATA
       } else {
-        print("----------");
         // POST (SET) NEW ADDRESS
         await _service
             .post(styleSheet.apis.addressDocument(userdata.data!.id!), {
-          "address List": [model.toMap()]
+          "address List": [db.toMap()]
         });
-        _addressData.add(model); // SET ADDRESS DATA
+        _addressData.add(db); // SET ADDRESS DATA
       }
-    } catch (e) { 
+    } catch (e) {
       print("SET USER ADDRESS ERROR :: ${e.toString()}");
     } finally {
       update();
@@ -90,6 +89,28 @@ class AddressController extends GetxController {
       print("REMOVE USER ADDRESS ERROR :: ${e.toString()}");
     } finally {
       update();
+    }
+  }
+
+  // USER ADDRESS DEFULT VALUE UPDATE
+  Future setdefaultAddress(AddressModel model) async {
+    final userdata = Get.find<UserController>().userdata; // USER CONTROLLER
+    try {
+      final db = _addressData.firstWhere(
+          (element) => element.defaultAddress == true,
+          orElse: () => AddressModel());
+      if (model.id != db.id!) {
+        print("----------");
+        await _service
+            .update(styleSheet.apis.addressDocument(userdata.data!.id!), {
+          "address List": FieldValue.arrayUnion([
+            model.copyWith(defaultAddress: true).toMap(),
+            db.copyWith(defaultAddress: false).toMap(),
+          ]),
+        });
+      }
+    } catch (e) {
+      print("SET DEFAULT ADDRESS ERROR :: ${e.toString()}");
     }
   }
 }

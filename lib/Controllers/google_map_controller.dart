@@ -22,37 +22,47 @@ class GoogleMapGetXController extends GetxController {
   String userLiveAddress = "";
 
   Future<void> getUserCurrentLocation() async {
-    bool serviceEnabled = false;
-    PermissionStatus permissionStatus;
-    serviceEnabled = await _location.serviceEnabled();
-    if (!serviceEnabled) serviceEnabled = await _location.requestService();
-    permissionStatus = await _location.hasPermission();
-    if (permissionStatus == PermissionStatus.denied ||
-        permissionStatus == PermissionStatus.deniedForever) {
-      permissionStatus = await _location.requestPermission();
+    try {
+      bool serviceEnabled = false;
+      PermissionStatus permissionStatus;
+      serviceEnabled = await _location.serviceEnabled();
+      if (!serviceEnabled) serviceEnabled = await _location.requestService();
+      permissionStatus = await _location.hasPermission();
+      if (permissionStatus == PermissionStatus.denied ||
+          permissionStatus == PermissionStatus.deniedForever) {
+        permissionStatus = await _location.requestPermission();
+      }
+      _locationData = await _location.getLocation();
+      final latlng =
+          LatLng(_locationData!.latitude!, _locationData!.longitude!);
+      userLiveAddress = await AppFunctions.userFullAddress(latlng);
+      _center = latlng;
+      update();
+    } catch (e) {
+      await AppFunctions.locationPermission();
     }
-    _locationData = await _location.getLocation();
-    final latlng = LatLng(_locationData!.latitude!, _locationData!.longitude!);
-    userLiveAddress = await AppFunctions.userFullAddress(latlng);
-    _center = latlng;
-    update();
   }
 
   Future markersUpdate(
       LatLng latlng, Completer<GoogleMapController> controller) async {
-    _markers.clear();
-    addressTileController.text = await AppFunctions.userFullAddress(latlng);
-    _center = LatLng(_locationData!.latitude!, _locationData!.longitude!);
-    _markers.add(Marker(
-      markerId: MarkerId(latlng.toString()),
-      position: latlng,
-      infoWindow: InfoWindow(
-        title: addressTileController.text,
-      ),
-      icon: BitmapDescriptor.defaultMarker,
-    ));
-    mapControllerNewCameraPosition(latlng, controller);
-    update();
+    try {
+      _markers.clear();
+      addressTileController.text = await AppFunctions.userFullAddress(latlng);
+      _center = latlng;
+      _markers.add(Marker(
+        markerId: MarkerId(latlng.toString()),
+        position: latlng,
+        infoWindow: InfoWindow(
+          title: addressTileController.text,
+        ),
+        icon: BitmapDescriptor.defaultMarker,
+      ));
+      mapControllerNewCameraPosition(latlng, controller);
+    } catch (e) {
+      print("MARKERS UPDATE FUNCTION ERROR :: ${e.toString()}");
+    } finally {
+      update();
+    }
   }
 
   Future mapControllerNewCameraPosition(

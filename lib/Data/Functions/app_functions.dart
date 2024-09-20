@@ -2,9 +2,12 @@
 
 import 'dart:math';
 
+import 'package:car_booking_customer/Components/Dialogs/phone_setting_permission_dialog.dart';
 import 'package:car_booking_customer/Models/car_model.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class AppFunctions {
   //Generate random id **//
@@ -33,6 +36,7 @@ class AppFunctions {
     return bestpackageList.first;
   }
 
+  // LATLNG CHANGE IN USER FULL ADDRESS
   static Future<String> userFullAddress(LatLng latlng) async {
     List<Placemark> placemark =
         await placemarkFromCoordinates(latlng.latitude, latlng.longitude);
@@ -40,5 +44,20 @@ class AppFunctions {
     String fullAddress =
         "${place.name},${place.subLocality}, ${place.locality}, ${place.postalCode},${place.administrativeArea}, ${place.country}";
     return fullAddress;
+  }
+
+  static locationPermission() async {
+    final locationStates = await Permission.location.status;
+    if (locationStates.isDenied || locationStates.isPermanentlyDenied) {
+      try {
+        Get.dialog(PhoneSettingPermissionDialog(
+            title: "Allow access to loction",
+            onTap: () async {
+              await openAppSettings();
+            }));
+      } catch (e) {
+        print("Location Permission Function ERROR :: ${e.toString()}");
+      }
+    }
   }
 }
